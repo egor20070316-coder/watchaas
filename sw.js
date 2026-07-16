@@ -1,4 +1,4 @@
-const CACHE_NAME = 'watchaas-pwa-v4';
+const CACHE_NAME = 'watchaas-pwa-v5';
 const APP_SHELL = [
   './',
   './index.html',
