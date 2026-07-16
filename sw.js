@@ -1,8 +1,7 @@
-const CACHE_NAME = 'watchaas-pwa-v6';
+const CACHE_NAME = 'watchaas-pwa-v7';
 const APP_SHELL = [
   './',
   './index.html',
-  './offline.html',
   './manifest.json',
   './assets/css/style.css',
   './assets/js/app.js',
@@ -54,7 +53,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, response.clone()));
           return response;
         })
-        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./offline.html')))
+        .catch(() => caches.match(event.request))
     );
     return;
   }
