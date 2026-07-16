@@ -305,10 +305,6 @@ function renderProductDetail(id) {
         </dl>
       </div>
     </section>
-    <section class="reviews-section">
-      <div class="section-heading"><h2>Отзывы о модели</h2></div>
-      ${productReviews.length ? `<div class="review-grid">${productReviews.map(renderReviewCard).join('')}</div>` : '<div class="empty">У этой модели ещё нет отзывов.</div>'}
-    </section>
   `;
 }
 
