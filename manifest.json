@@ -1,7 +1,7 @@
 {
   "name": "Watchaas - магазин часов",
   "short_name": "Watchaas",
-  "description": "PWA-приложение магазина наручных часов без PHP.",
+  "description": "Учебное приложение магазина наручных часов.",
   "lang": "ru-RU",
   "start_url": "index.html",
   "scope": "./",

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="PWA-приложение магазина часов Watchaas без PHP">
+  <meta name="description" content="Учебное приложение магазина часов Watchaas">
   <meta name="theme-color" content="#171716">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -37,7 +37,7 @@
         <div>
           <span class="eyebrow">Время выбирать лучшее</span>
           <h1>Часы, которые подчёркивают ваш характер</h1>
-          <p>Классические, спортивные и современные модели в одном понятном каталоге. GitHub-версия работает без PHP и базы данных.</p>
+          <p>Классические, спортивные и современные модели в одном понятном каталоге. Каталог работает прямо в браузере, а список задач сохраняется на этом устройстве.</p>
           <div class="button-row">
             <a class="button" href="#catalog" data-tab="catalog">Открыть каталог часов</a>
             <a class="button button--ghost" href="#todo" data-tab="todo">Список задач</a>
@@ -80,8 +80,19 @@
             </form>
           </aside>
           <section>
-            <div class="results" id="productCount"></div>
-            <div class="product-grid product-grid--catalog" id="productGrid"></div>
+            <div class="results" id="productCount"><b>Найдено: 10</b></div>
+            <div class="product-grid product-grid--catalog" id="productGrid">
+              <article class="product-card"><a class="product-card__link" href="#product-1" aria-label="Открыть Casio G-Shock GA-2100-1A1ER"><span class="product-card__image"><img src="assets/img/watches/real-01.jpg" alt="Casio G-Shock GA-2100-1A1ER"></span><div class="product-card__body"><small>Casio</small><h3>G-Shock GA-2100-1A1ER</h3><p>Мужские · Кварцевый</p><div class="rating">★★★★★ <small>(0)</small></div><div class="price">13 990 ₽<del>16 990 ₽</del></div></div></a></article>
+              <article class="product-card"><a class="product-card__link" href="#product-2" aria-label="Открыть Tissot PRX Quartz 40"><span class="product-card__image"><img src="assets/img/watches/real-02.jpg" alt="Tissot PRX Quartz 40"></span><div class="product-card__body"><small>Tissot</small><h3>PRX Quartz 40</h3><p>Унисекс · Кварцевый</p><div class="rating">★★★★★ <small>(0)</small></div><div class="price">54 900 ₽</div></div></a></article>
+              <article class="product-card"><a class="product-card__link" href="#product-3" aria-label="Открыть Casio F-91W"><span class="product-card__image"><img src="assets/img/watches/real-03.jpg" alt="Casio F-91W"></span><div class="product-card__body"><small>Casio</small><h3>F-91W</h3><p>Унисекс · Электронный</p><div class="rating">★★★★★ <small>(1)</small></div><div class="price">3 490 ₽<del>4 490 ₽</del></div></div></a></article>
+              <article class="product-card"><a class="product-card__link" href="#product-4" aria-label="Открыть Seiko SKX007"><span class="product-card__image"><img src="assets/img/watches/real-04.jpg" alt="Seiko SKX007"></span><div class="product-card__body"><small>Seiko</small><h3>SKX007</h3><p>Мужские · Механический</p><div class="rating">★★★★★ <small>(0)</small></div><div class="price">52 990 ₽</div></div></a></article>
+              <article class="product-card"><a class="product-card__link" href="#product-5" aria-label="Открыть Omega Speedmaster Professional"><span class="product-card__image"><img src="assets/img/watches/real-05.jpg" alt="Omega Speedmaster Professional"></span><div class="product-card__body"><small>Omega</small><h3>Speedmaster Professional</h3><p>Мужские · Механический</p><div class="rating">★★★★★ <small>(0)</small></div><div class="price">849 900 ₽<del>899 900 ₽</del></div></div></a></article>
+              <article class="product-card"><a class="product-card__link" href="#product-6" aria-label="Открыть Rolex Submariner Date 16610"><span class="product-card__image"><img src="assets/img/watches/real-06.jpg" alt="Rolex Submariner Date 16610"></span><div class="product-card__body"><small>Rolex</small><h3>Submariner Date 16610</h3><p>Мужские · Механический</p><div class="rating">★★★★☆ <small>(1)</small></div><div class="price">1 290 000 ₽</div></div></a></article>
+              <article class="product-card"><a class="product-card__link" href="#product-7" aria-label="Открыть Hamilton Khaki X-Patrol H76566151"><span class="product-card__image"><img src="assets/img/watches/real-08.jpg" alt="Hamilton Khaki X-Patrol H76566151"></span><div class="product-card__body"><small>Hamilton</small><h3>Khaki X-Patrol H76566151</h3><p>Мужские · Механический</p><div class="rating">★★★★★ <small>(1)</small></div><div class="price">169 900 ₽</div></div></a></article>
+              <article class="product-card"><a class="product-card__link" href="#product-8" aria-label="Открыть Восток Амфибия 090916"><span class="product-card__image"><img src="assets/img/watches/real-09.jpg" alt="Восток Амфибия 090916"></span><div class="product-card__body"><small>Восток</small><h3>Амфибия 090916</h3><p>Мужские · Механический</p><div class="rating">★★★★★ <small>(0)</small></div><div class="price">12 990 ₽<del>14 990 ₽</del></div></div></a></article>
+              <article class="product-card"><a class="product-card__link" href="#product-9" aria-label="Открыть Citizen Eco-Drive AS2031-57E"><span class="product-card__image"><img src="assets/img/watches/real-10.jpg" alt="Citizen Eco-Drive AS2031-57E"></span><div class="product-card__body"><small>Citizen</small><h3>Eco-Drive AS2031-57E</h3><p>Мужские · Кварцевый</p><div class="rating">★★★★☆ <small>(1)</small></div><div class="price">89 900 ₽</div></div></a></article>
+              <article class="product-card"><a class="product-card__link" href="#product-10" aria-label="Открыть Cartier Tank Must 2021"><span class="product-card__image"><img src="assets/img/watches/real-11.jpg" alt="Cartier Tank Must 2021"></span><div class="product-card__body"><small>Cartier</small><h3>Tank Must 2021</h3><p>Унисекс · Кварцевый</p><div class="rating">★★★★★ <small>(1)</small></div><div class="price">399 000 ₽<del>429 000 ₽</del></div></div></a></article>
+            </div>
           </section>
         </div>
       </div>
@@ -143,8 +154,8 @@
 
   <footer class="site-footer">
     <div class="container footer-contacts">
-      <span>study@watchaas.github</span>
-      <span>PWA ready</span>
+      <span>watchaas@mail.ru</span>
+      <span>Учебный магазин часов</span>
     </div>
   </footer>
 </body>

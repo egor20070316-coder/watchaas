@@ -149,7 +149,7 @@ const reviews = [
   { id: 5, productId: 10, author: 'Мария', model: 'Cartier Tank Must', rating: 5, text: 'Очень аккуратная модель под деловой стиль. На странице товара всё понятно и красиво.', date: '2026-07-02' }
 ];
 
-const todoStorageKey = 'watchaas-github-todos';
+const todoStorageKey = 'watchaas-todos';
 
 const sectionIds = ['home', 'catalog', 'product', 'reviews', 'todo'];
 
