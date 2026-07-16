@@ -1,4 +1,4 @@
-const CACHE_NAME = 'watchaas-github-pwa-v1';
+const CACHE_NAME = 'watchaas-github-pwa-v2';
 const APP_SHELL = [
   './',
   './index.html',
