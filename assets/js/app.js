@@ -1,47 +1,168 @@
 const products = [
-  ['Casio', 'G-Shock GA-2100-1A1ER', 'Мужские', 'Кварцевый', 13990, 'assets/img/watches/real-01.jpg'],
-  ['Tissot', 'PRX Quartz 40', 'Унисекс', 'Кварцевый', 54900, 'assets/img/watches/real-02.jpg'],
-  ['Casio', 'F-91W', 'Унисекс', 'Электронный', 3490, 'assets/img/watches/real-03.jpg'],
-  ['Seiko', 'SKX007', 'Мужские', 'Механический', 52990, 'assets/img/watches/real-04.jpg'],
-  ['Omega', 'Speedmaster Professional', 'Мужские', 'Механический', 849900, 'assets/img/watches/real-05.jpg'],
-  ['Rolex', 'Submariner Date 16610', 'Мужские', 'Механический', 1290000, 'assets/img/watches/real-06.jpg'],
-  ['Hamilton', 'Khaki X-Patrol H76566151', 'Мужские', 'Механический', 169900, 'assets/img/watches/real-08.jpg'],
-  ['Восток', 'Амфибия 090916', 'Мужские', 'Механический', 12990, 'assets/img/watches/real-09.jpg'],
-  ['Citizen', 'Eco-Drive AS2031-57E', 'Мужские', 'Кварцевый', 89900, 'assets/img/watches/real-10.jpg'],
-  ['Cartier', 'Tank Must 2021', 'Унисекс', 'Кварцевый', 399000, 'assets/img/watches/real-11.jpg']
-].map((item, index) => ({
-  id: index + 1,
-  brand: item[0],
-  name: item[1],
-  category: item[2],
-  mechanism: item[3],
-  price: item[4],
-  image: item[5]
-}));
+  {
+    id: 1,
+    brand: 'Casio',
+    name: 'G-Shock GA-2100-1A1ER',
+    sku: 'GA-2100-1A1ER',
+    category: 'Мужские',
+    mechanism: 'Кварцевый',
+    caseMaterial: 'Карбон и полимер',
+    color: 'Чёрный',
+    price: 13990,
+    oldPrice: 16990,
+    image: 'assets/img/watches/real-01.jpg',
+    description: 'Ударопрочная аналогово-цифровая модель серии G-Shock с тонким восьмиугольным корпусом.'
+  },
+  {
+    id: 2,
+    brand: 'Tissot',
+    name: 'PRX Quartz 40',
+    sku: 'TIS-PRX-Q40',
+    category: 'Унисекс',
+    mechanism: 'Кварцевый',
+    caseMaterial: 'Нержавеющая сталь',
+    color: 'Серебристый',
+    price: 54900,
+    oldPrice: null,
+    image: 'assets/img/watches/real-02.jpg',
+    description: 'Швейцарские часы PRX с интегрированным стальным браслетом и лаконичным циферблатом.'
+  },
+  {
+    id: 3,
+    brand: 'Casio',
+    name: 'F-91W',
+    sku: 'F-91W-1',
+    category: 'Унисекс',
+    mechanism: 'Электронный',
+    caseMaterial: 'Полимер',
+    color: 'Чёрный',
+    price: 3490,
+    oldPrice: 4490,
+    image: 'assets/img/watches/real-03.jpg',
+    description: 'Легендарные компактные электронные часы с секундомером, будильником и подсветкой.'
+  },
+  {
+    id: 4,
+    brand: 'Seiko',
+    name: 'SKX007',
+    sku: 'SKX007',
+    category: 'Мужские',
+    mechanism: 'Механический',
+    caseMaterial: 'Нержавеющая сталь',
+    color: 'Чёрный',
+    price: 52990,
+    oldPrice: null,
+    image: 'assets/img/watches/real-04.jpg',
+    description: 'Японские автоматические часы для дайвинга с вращающимся безелем и читаемыми метками.'
+  },
+  {
+    id: 5,
+    brand: 'Omega',
+    name: 'Speedmaster Professional',
+    sku: 'OME-SPM-PRO',
+    category: 'Мужские',
+    mechanism: 'Механический',
+    caseMaterial: 'Нержавеющая сталь',
+    color: 'Чёрный',
+    price: 849900,
+    oldPrice: 899900,
+    image: 'assets/img/watches/real-05.jpg',
+    description: 'Культовый механический хронограф Speedmaster Professional со стальным корпусом.'
+  },
+  {
+    id: 6,
+    brand: 'Rolex',
+    name: 'Submariner Date 16610',
+    sku: '16610',
+    category: 'Мужские',
+    mechanism: 'Механический',
+    caseMaterial: 'Нержавеющая сталь',
+    color: 'Чёрный',
+    price: 1290000,
+    oldPrice: null,
+    image: 'assets/img/watches/real-06.jpg',
+    description: 'Автоматические часы для дайвинга Submariner Date с чёрным безелем и стальным браслетом.'
+  },
+  {
+    id: 7,
+    brand: 'Hamilton',
+    name: 'Khaki X-Patrol H76566151',
+    sku: 'H76566151',
+    category: 'Мужские',
+    mechanism: 'Механический',
+    caseMaterial: 'Нержавеющая сталь',
+    color: 'Серебристый',
+    price: 169900,
+    oldPrice: null,
+    image: 'assets/img/watches/real-08.jpg',
+    description: 'Автоматический швейцарский хронограф линейки Khaki с калибром H-21.'
+  },
+  {
+    id: 8,
+    brand: 'Восток',
+    name: 'Амфибия 090916',
+    sku: '090916',
+    category: 'Мужские',
+    mechanism: 'Механический',
+    caseMaterial: 'Нержавеющая сталь',
+    color: 'Синий',
+    price: 12990,
+    oldPrice: 14990,
+    image: 'assets/img/watches/real-09.jpg',
+    description: 'Российские автоматические часы для подводного плавания из классической серии Амфибия.'
+  },
+  {
+    id: 9,
+    brand: 'Citizen',
+    name: 'Eco-Drive AS2031-57E',
+    sku: 'AS2031-57E',
+    category: 'Мужские',
+    mechanism: 'Кварцевый',
+    caseMaterial: 'Титан',
+    color: 'Серебристый',
+    price: 89900,
+    oldPrice: null,
+    image: 'assets/img/watches/real-10.jpg',
+    description: 'Часы Citizen Eco-Drive с питанием от света, радиосинхронизацией и титановым корпусом.'
+  },
+  {
+    id: 10,
+    brand: 'Cartier',
+    name: 'Tank Must 2021',
+    sku: 'CAR-TANK-2021',
+    category: 'Унисекс',
+    mechanism: 'Кварцевый',
+    caseMaterial: 'Нержавеющая сталь',
+    color: 'Серебристый',
+    price: 399000,
+    oldPrice: 429000,
+    image: 'assets/img/watches/real-11.jpg',
+    description: 'Современная версия классических прямоугольных часов Cartier Tank Must.'
+  }
+];
 
 const reviews = [
-  ['Роман', 'Casio F-91W', 'Очень легкие и компактные часы, отличный вариант на каждый день.', '2026-07-01'],
-  ['Светлана', 'Rolex Submariner Date 16610', 'Браслет удобный, корпус выглядит универсально и строго.', '2026-06-29'],
-  ['Артур', 'Hamilton Khaki X-Patrol', 'Корпус массивный, хронограф работает четко и без задержек.', '2026-07-04'],
-  ['Сергей', 'Citizen Eco-Drive', 'Eco-Drive избавил от замены батареек, заряд держится отлично.', '2026-06-27'],
-  ['Максим', 'Swatch GB101', 'Почти невесомые часы с узнаваемым дизайном Swatch.', '2026-07-02']
-].map((item, index) => ({
-  id: index + 1,
-  author: item[0],
-  model: item[1],
-  text: item[2],
-  date: item[3]
-}));
+  { id: 1, productId: 3, author: 'Роман', model: 'Casio F-91W', rating: 5, text: 'Очень лёгкие и компактные часы — через несколько минут перестаёшь ощущать их на руке.', date: '2026-07-01' },
+  { id: 2, productId: 6, author: 'Светлана', model: 'Rolex Submariner Date 16610', rating: 4, text: 'Безель поворачивается с точными щелчками, браслет удобный, размер корпуса универсальный.', date: '2026-06-29' },
+  { id: 3, productId: 7, author: 'Артур', model: 'Hamilton Khaki X-Patrol', rating: 5, text: 'Корпус массивный, зато часы ощущаются основательно. Хронограф работает чётко.', date: '2026-07-04' },
+  { id: 4, productId: 9, author: 'Сергей', model: 'Citizen Eco-Drive', rating: 4, text: 'Eco-Drive избавил от замены батареек: часам достаточно света, чтобы точно идти.', date: '2026-06-27' },
+  { id: 5, productId: 10, author: 'Мария', model: 'Cartier Tank Must', rating: 5, text: 'Очень аккуратная модель под деловой стиль. На странице товара всё понятно и красиво.', date: '2026-07-02' }
+];
 
 const todoStorageKey = 'watchaas-github-todos';
+
+const sectionIds = ['home', 'catalog', 'product', 'reviews', 'todo'];
 
 document.addEventListener('DOMContentLoaded', () => {
   setupNavigation();
   setupCatalog();
   setupReviews();
   setupTodos();
+  renderRoute();
   registerServiceWorker();
 });
+
+window.addEventListener('hashchange', renderRoute);
 
 function setupNavigation() {
   const menuButton = document.querySelector('.menu-toggle');
@@ -55,14 +176,24 @@ function setupNavigation() {
   }
 
   document.querySelectorAll('[data-tab]').forEach((link) => {
-    link.addEventListener('click', (event) => {
-      event.preventDefault();
-      setActiveTab(link.dataset.tab);
-      window.location.hash = link.dataset.tab;
+    link.addEventListener('click', () => {
+      if (nav) nav.classList.remove('is-open');
+      if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
     });
   });
+}
 
-  setActiveTab(window.location.hash.replace('#', '') || 'home');
+function renderRoute() {
+  const hash = window.location.hash.replace('#', '');
+
+  if (hash.startsWith('product-')) {
+    const id = Number(hash.replace('product-', ''));
+    renderProductDetail(id);
+    setActiveTab('product');
+    return;
+  }
+
+  setActiveTab(sectionIds.includes(hash) ? hash : 'home');
 }
 
 function setActiveTab(tabName) {
@@ -70,8 +201,10 @@ function setActiveTab(tabName) {
     section.classList.toggle('active', section.id === tabName);
   });
 
+  document.querySelector('.active-only-home')?.classList.toggle('is-visible', tabName === 'home');
+
   document.querySelectorAll('.main-nav a').forEach((link) => {
-    link.classList.toggle('active', link.dataset.tab === tabName);
+    link.classList.toggle('active', link.dataset.tab === tabName || (tabName === 'product' && link.dataset.tab === 'catalog'));
   });
 }
 
@@ -90,10 +223,15 @@ function setupCatalog() {
     control.addEventListener('input', renderProducts);
   });
 
+  document.getElementById('catalogFilters').addEventListener('reset', () => {
+    setTimeout(renderProducts, 0);
+  });
+
   renderProducts();
 }
 
 function renderProducts() {
+  const query = document.getElementById('searchFilter').value.trim().toLowerCase();
   const brand = document.getElementById('brandFilter').value;
   const mechanism = document.getElementById('mechanismFilter').value;
   const minPrice = Number(document.getElementById('minPriceFilter').value) || 0;
@@ -102,7 +240,9 @@ function renderProducts() {
   const sort = document.getElementById('sortFilter').value;
 
   let list = products.filter((product) => {
-    return (!brand || product.brand === brand)
+    const searchText = `${product.brand} ${product.name}`.toLowerCase();
+    return (!query || searchText.includes(query))
+      && (!brand || product.brand === brand)
       && (!mechanism || product.mechanism === mechanism)
       && product.price >= minPrice
       && product.price <= maxPrice;
@@ -112,33 +252,75 @@ function renderProducts() {
   if (sort === 'price_desc') list.sort((a, b) => b.price - a.price);
 
   const grid = document.getElementById('productGrid');
-  document.getElementById('productCount').textContent = `Найдено: ${list.length}`;
+  document.getElementById('productCount').innerHTML = `<b>Найдено: ${list.length}</b>`;
   grid.innerHTML = '';
 
   if (!list.length) {
-    grid.innerHTML = '<div class="empty">Ничего не найдено</div>';
+    grid.innerHTML = '<div class="empty"><h2>Ничего не найдено</h2><p>Измените параметры или сбросьте фильтры.</p></div>';
     return;
   }
 
   list.forEach((product) => {
+    const averageRating = getProductAverageRating(product.id);
+    const reviewCount = reviews.filter((review) => review.productId === product.id).length;
     const card = document.createElement('article');
     card.className = 'product-card';
     card.innerHTML = `
-      <img src="${product.image}" alt="${product.brand} ${product.name}">
-      <div class="product-card__body">
-        <small>${product.brand}</small>
-        <h3>${product.name}</h3>
-        <p>${product.category} · ${product.mechanism}</p>
-        <div class="price">${formatMoney(product.price)}</div>
-      </div>
+      <a class="product-card__link" href="#product-${product.id}" aria-label="Открыть ${escapeHtml(product.brand)} ${escapeHtml(product.name)}">
+        <span class="product-card__image"><img src="${product.image}" alt="${escapeHtml(product.brand)} ${escapeHtml(product.name)}"></span>
+        <div class="product-card__body">
+          <small>${escapeHtml(product.brand)}</small>
+          <h3>${escapeHtml(product.name)}</h3>
+          <p>${escapeHtml(product.category)} · ${escapeHtml(product.mechanism)}</p>
+          <div class="rating">${stars(averageRating)} <small>(${reviewCount})</small></div>
+          <div class="price">${formatMoney(product.price)}${product.oldPrice ? `<del>${formatMoney(product.oldPrice)}</del>` : ''}</div>
+        </div>
+      </a>
     `;
     grid.append(card);
   });
 }
 
+function renderProductDetail(id) {
+  const product = products.find((item) => item.id === id) || products[0];
+  const productReviews = reviews.filter((review) => review.productId === product.id);
+  const averageRating = getProductAverageRating(product.id);
+  const detail = document.getElementById('productDetail');
+
+  detail.innerHTML = `
+    <section class="product-detail">
+      <div class="product-detail__image"><img src="${product.image}" alt="${escapeHtml(product.brand)} ${escapeHtml(product.name)}"></div>
+      <div>
+        <span class="eyebrow">${escapeHtml(product.brand)}</span>
+        <h1>${escapeHtml(product.name)}</h1>
+        <p class="sku">Артикул: ${escapeHtml(product.sku)}</p>
+        <div class="rating">${stars(averageRating)} ${averageRating.toFixed(1)} · ${productReviews.length} отзывов</div>
+        <div class="price price--large">${formatMoney(product.price)}${product.oldPrice ? `<del>${formatMoney(product.oldPrice)}</del>` : ''}</div>
+        <p>${escapeHtml(product.description)}</p>
+        <h2>Характеристики</h2>
+        <dl class="specs">
+          <div><dt>Категория</dt><dd>${escapeHtml(product.category)}</dd></div>
+          <div><dt>Механизм</dt><dd>${escapeHtml(product.mechanism)}</dd></div>
+          <div><dt>Материал корпуса</dt><dd>${escapeHtml(product.caseMaterial)}</dd></div>
+          <div><dt>Цвет</dt><dd>${escapeHtml(product.color)}</dd></div>
+        </dl>
+      </div>
+    </section>
+    <section class="reviews-section">
+      <div class="section-heading"><h2>Отзывы о модели</h2></div>
+      ${productReviews.length ? `<div class="review-grid">${productReviews.map(renderReviewCard).join('')}</div>` : '<div class="empty">У этой модели ещё нет отзывов.</div>'}
+    </section>
+  `;
+}
+
 function setupReviews() {
   document.getElementById('reviewDateFilter').addEventListener('input', renderReviews);
   document.getElementById('reviewSort').addEventListener('input', renderReviews);
+  document.getElementById('resetReviewFilter').addEventListener('click', () => {
+    document.getElementById('reviewDateFilter').value = '';
+    document.getElementById('reviewSort').value = 'desc';
+    renderReviews();
+  });
   renderReviews();
 }
 
@@ -151,26 +333,18 @@ function renderReviews() {
   list.sort((a, b) => sort === 'asc' ? new Date(a.date) - new Date(b.date) : new Date(b.date) - new Date(a.date));
 
   const container = document.getElementById('reviewList');
-  container.innerHTML = '';
+  container.innerHTML = list.length ? list.map(renderReviewCard).join('') : '<div class="empty">Отзывов на эту дату нет.</div>';
+}
 
-  if (!list.length) {
-    container.innerHTML = '<div class="empty">Отзывов на эту дату нет</div>';
-    return;
-  }
-
-  list.forEach((review) => {
-    const card = document.createElement('article');
-    card.className = 'review-card';
-    card.innerHTML = `
-      <div class="card-head">
-        <h3>${review.author}</h3>
-        <span class="card-date">${formatDate(review.date)}</span>
-      </div>
-      <p><b>${review.model}</b></p>
-      <p>${review.text}</p>
-    `;
-    container.append(card);
-  });
+function renderReviewCard(review) {
+  return `
+    <article class="review-card">
+      <div><strong>${escapeHtml(review.author)}</strong><span class="rating">${stars(review.rating)}</span></div>
+      <p><small>${escapeHtml(review.model)}</small></p>
+      <p>${escapeHtml(review.text)}</p>
+      <time datetime="${review.date}">${formatDate(review.date)}</time>
+    </article>
+  `;
 }
 
 function setupTodos() {
@@ -212,15 +386,13 @@ function renderTodos() {
 
   todos.forEach((todo) => {
     const card = document.createElement('article');
-    card.className = 'todo-card';
+    card.className = 'task-card';
     card.innerHTML = `
-      <div class="card-head">
-        <div>
-          <h3>${todo.title}</h3>
-          <p>${formatDate(todo.date)}</p>
-        </div>
-        <button class="todo-delete" type="button">Удалить</button>
+      <div>
+        <h3>${escapeHtml(todo.title)}</h3>
+        <p>${formatDate(todo.date)}</p>
       </div>
+      <div class="task-actions"><button class="todo-delete" type="button">Удалить</button></div>
     `;
     card.querySelector('button').addEventListener('click', () => {
       saveTodos(getTodos().filter((item) => item.id !== todo.id));
@@ -238,6 +410,17 @@ function saveTodos(todos) {
   localStorage.setItem(todoStorageKey, JSON.stringify(todos));
 }
 
+function getProductAverageRating(productId) {
+  const productReviews = reviews.filter((review) => review.productId === productId);
+  if (!productReviews.length) return 0;
+  return productReviews.reduce((sum, review) => sum + review.rating, 0) / productReviews.length;
+}
+
+function stars(value) {
+  const rounded = Math.round(value);
+  return '★★★★★'.slice(0, rounded) + '☆☆☆☆☆'.slice(0, 5 - rounded);
+}
+
 function formatMoney(value) {
   return `${value.toLocaleString('ru-RU')} ₽`;
 }
@@ -245,6 +428,15 @@ function formatMoney(value) {
 function formatDate(date) {
   const parts = date.split('-');
   return `${parts[2]}.${parts[1]}.${parts[0]}`;
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
 function registerServiceWorker() {

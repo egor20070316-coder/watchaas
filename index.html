@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="PWA-приложение магазина часов Watchaas без PHP">
-  <meta name="theme-color" content="#d21f1b">
+  <meta name="theme-color" content="#171716">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Watchaas">
@@ -17,12 +17,12 @@
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#home">
+      <a class="brand" href="#home" data-tab="home">
         <img src="assets/img/logo.svg" alt="" width="42" height="42">
-        <span><strong>Watchaas</strong><small>PWA магазин часов</small></span>
+        <span><strong>Watchaas</strong><small>Магазин наручных часов от АСУ</small></span>
       </a>
-      <button class="menu-toggle" type="button" aria-expanded="false">Меню</button>
-      <nav class="main-nav" aria-label="Основная навигация">
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNav">Меню</button>
+      <nav id="mainNav" class="main-nav" aria-label="Основная навигация">
         <a class="active" href="#home" data-tab="home">Главная</a>
         <a href="#catalog" data-tab="catalog">Каталог</a>
         <a href="#reviews" data-tab="reviews">Отзывы</a>
@@ -35,46 +35,83 @@
     <section class="hero tab-section active" id="home">
       <div class="container hero-grid">
         <div>
-          <span class="eyebrow">PWA приложение</span>
-          <h1>Watchaas можно установить на телефон</h1>
-          <p>Статическая версия магазина часов для GitHub Pages: каталог, отзывы, ToDoList, manifest и service worker.</p>
-          <a class="button" href="#catalog" data-tab="catalog">Открыть каталог</a>
+          <span class="eyebrow">Время выбирать лучшее</span>
+          <h1>Часы, которые подчёркивают ваш характер</h1>
+          <p>Классические, спортивные и современные модели в одном понятном каталоге. GitHub-версия работает без PHP и базы данных.</p>
+          <div class="button-row">
+            <a class="button" href="#catalog" data-tab="catalog">Открыть каталог часов</a>
+            <a class="button button--ghost" href="#todo" data-tab="todo">Список задач</a>
+          </div>
         </div>
-        <img class="hero-logo" src="assets/img/watchaas-logo.png" alt="Watchaas">
+        <a class="hero__logo-link" href="#catalog" data-tab="catalog" aria-label="Открыть каталог часов">
+          <img class="hero__logo" src="assets/img/watchaas-logo.png" alt="Watchaas">
+        </a>
+      </div>
+    </section>
+
+    <section class="benefits tab-section active-only-home" aria-label="Преимущества">
+      <div class="container benefit-grid">
+        <article><b>10 моделей</b><span>на любой стиль</span></article>
+        <article><b>Честные отзывы</b><span>с датами покупателей</span></article>
+        <article><b>PWA</b><span>можно установить на телефон</span></article>
       </div>
     </section>
 
     <section class="section tab-section" id="catalog">
       <div class="container">
         <div class="page-heading">
-          <span class="eyebrow">Коллекция</span>
+          <span class="eyebrow">Коллекция Watchaas</span>
           <h1>Каталог часов</h1>
-          <p>Фильтрация по бренду, механизму и цене работает полностью на JavaScript.</p>
+          <p>Все цены и модели приведены в учебных целях. Нажмите на карточку, чтобы открыть подробности.</p>
         </div>
-        <form class="filters" id="catalogFilters">
-          <label>Бренд<select id="brandFilter"><option value="">Все бренды</option></select></label>
-          <label>Механизм<select id="mechanismFilter"><option value="">Все механизмы</option><option>Кварцевый</option><option>Механический</option><option>Электронный</option></select></label>
-          <label>Цена от<input type="number" id="minPriceFilter" min="0"></label>
-          <label>Цена до<input type="number" id="maxPriceFilter" min="0"></label>
-          <label>Сортировка<select id="sortFilter"><option value="">По умолчанию</option><option value="price_asc">Сначала дешевле</option><option value="price_desc">Сначала дороже</option></select></label>
-        </form>
-        <div class="results" id="productCount"></div>
-        <div class="product-grid" id="productGrid"></div>
+        <div class="catalog-layout">
+          <aside class="filters">
+            <form id="catalogFilters">
+              <h2>Фильтры</h2>
+              <label>Поиск<input id="searchFilter" placeholder="Модель или бренд"></label>
+              <label>Бренд<select id="brandFilter"><option value="">Все бренды</option></select></label>
+              <label>Механизм<select id="mechanismFilter"><option value="">Все</option><option>Кварцевый</option><option>Механический</option><option>Электронный</option></select></label>
+              <div class="form-row">
+                <label>Цена от<input type="number" id="minPriceFilter" min="0"></label>
+                <label>до<input type="number" id="maxPriceFilter" min="0"></label>
+              </div>
+              <label>Сортировка<select id="sortFilter"><option value="">По умолчанию</option><option value="price_asc">Сначала дешевле</option><option value="price_desc">Сначала дороже</option></select></label>
+              <button class="button" type="reset">Сбросить фильтры</button>
+            </form>
+          </aside>
+          <section>
+            <div class="results" id="productCount"></div>
+            <div class="product-grid product-grid--catalog" id="productGrid"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tab-section" id="product">
+      <div class="container">
+        <a class="back-link" href="#catalog" data-tab="catalog">← Назад в каталог</a>
+        <div id="productDetail"></div>
       </div>
     </section>
 
     <section class="section tab-section" id="reviews">
       <div class="container">
         <div class="page-heading">
-          <span class="eyebrow">Покупатели</span>
+          <span class="eyebrow">Отзывы покупателей</span>
           <h1>Отзывы</h1>
-          <p>Пять учебных отзывов с фильтром по дате.</p>
+          <p>Отзывы придуманы для учебного проекта. Их можно фильтровать и сортировать по дате.</p>
         </div>
-        <div class="filters filters--small">
-          <label>Дата<input type="date" id="reviewDateFilter"></label>
-          <label>Сортировка<select id="reviewSort"><option value="desc">Новые сверху</option><option value="asc">Старые сверху</option></select></label>
+        <div class="reviews-layout">
+          <div>
+            <div class="review-grid" id="reviewList"></div>
+          </div>
+          <aside class="form-card">
+            <h2>Фильтр отзывов</h2>
+            <label>Дата<input type="date" id="reviewDateFilter"></label>
+            <label>Сортировка<select id="reviewSort"><option value="desc">Новые сверху</option><option value="asc">Старые сверху</option></select></label>
+            <button class="button" type="button" id="resetReviewFilter">Сбросить</button>
+          </aside>
         </div>
-        <div class="review-list" id="reviewList"></div>
       </div>
     </section>
 
@@ -85,23 +122,28 @@
           <h1>ToDoList</h1>
           <p>Задачи сохраняются в браузере без сервера и базы данных.</p>
         </div>
-        <form class="todo-form" id="todoForm">
-          <input id="todoTitle" type="text" placeholder="Название задачи" required>
-          <input id="todoDate" type="date" required>
-          <button class="button" type="submit">Добавить</button>
-        </form>
-        <div class="filters filters--small">
-          <label>Фильтр по дате<input type="date" id="todoDateFilter"></label>
-          <label>Сортировка<select id="todoSort"><option value="">По умолчанию</option><option value="asc">Дата вверх</option><option value="desc">Дата вниз</option></select></label>
+        <div class="todo-layout">
+          <form class="form-card" id="todoForm">
+            <h2>Новая задача</h2>
+            <label>Название<input id="todoTitle" type="text" placeholder="Например: проверить GitHub Pages" required></label>
+            <label>Дата<input id="todoDate" type="date" required></label>
+            <button class="button" type="submit">Добавить</button>
+          </form>
+          <section>
+            <div class="todo-toolbar">
+              <label>Фильтр по дате<input type="date" id="todoDateFilter"></label>
+              <label>Сортировка<select id="todoSort"><option value="">По умолчанию</option><option value="asc">Дата вверх</option><option value="desc">Дата вниз</option></select></label>
+            </div>
+            <div class="task-list" id="todoList"></div>
+          </section>
         </div>
-        <div class="todo-list" id="todoList"></div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-contacts">
-      <span>Watchaas GitHub Pages</span>
+      <span>study@watchaas.github</span>
       <span>PWA ready</span>
     </div>
   </footer>
