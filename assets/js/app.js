@@ -152,17 +152,45 @@ const reviews = [
 const todoStorageKey = 'watchaas-todos';
 
 const sectionIds = ['home', 'catalog', 'product', 'reviews', 'todo'];
+let installPromptEvent = null;
 
 document.addEventListener('DOMContentLoaded', () => {
   setupNavigation();
   setupCatalog();
   setupReviews();
   setupTodos();
+  setupInstallButton();
   renderRoute();
   registerServiceWorker();
 });
 
 window.addEventListener('hashchange', renderRoute);
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  installPromptEvent = event;
+  document.getElementById('installAppButton')?.classList.add('is-ready');
+});
+
+window.addEventListener('appinstalled', () => {
+  installPromptEvent = null;
+  document.getElementById('installAppButton')?.setAttribute('disabled', 'disabled');
+});
+
+function setupInstallButton() {
+  const button = document.getElementById('installAppButton');
+  if (!button) return;
+
+  button.addEventListener('click', async () => {
+    if (installPromptEvent) {
+      installPromptEvent.prompt();
+      await installPromptEvent.userChoice;
+      installPromptEvent = null;
+      return;
+    }
+
+    alert('Если окно установки не появилось, откройте меню браузера и выберите пункт "Установить приложение" или "Добавить на главный экран".');
+  });
+}
 
 function setupNavigation() {
   const menuButton = document.querySelector('.menu-toggle');
