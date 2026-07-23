@@ -1,5 +1,5 @@
 // ============================================================
-// app.js — полная логика магазина часов Watchaas
+// app.js — ПОЛНАЯ ЛОГИКА (ФИНАЛ)
 // ============================================================
 
 // ============================================================
@@ -149,7 +149,7 @@ const products = [
 ];
 
 // ============================================================
-// КЛЮЧИ ДЛЯ ХРАНЕНИЯ В localStorage
+// КЛЮЧИ ДЛЯ ХРАНЕНИЯ
 // ============================================================
 const REVIEWS_KEY = 'watchaas_reviews';
 
@@ -211,6 +211,8 @@ function renderStars(rating) {
 // ============================================================
 function renderCatalog() {
     const grid = document.getElementById('productGrid');
+    if (!grid) return;
+    
     grid.innerHTML = products.map(p => {
         const avgRating = getAverageRating(p.id);
         const count = getReviewCount(p.id);
@@ -270,6 +272,7 @@ function renderProductDetail(productId) {
     `;
 
     renderProductReviews(productId);
+    resetStars();
 }
 
 // ============================================================
@@ -301,6 +304,8 @@ function renderProductReviews(productId) {
 // ============================================================
 function renderAllReviews() {
     const container = document.getElementById('reviewList');
+    if (!container) return;
+    
     const reviews = getReviews();
     
     if (reviews.length === 0) {
@@ -328,7 +333,39 @@ function renderAllReviews() {
 }
 
 // ============================================================
-// ОБРАБОТКА ОТПРАВКИ ОТЗЫВА (РАБОТАЕТ С РАДИО-КНОПКАМИ)
+// ЗВЕЗДЫ — ЛОГИКА
+// ============================================================
+function resetStars() {
+    const labels = document.querySelectorAll('#starRatingContainer label');
+    labels.forEach(label => {
+        label.style.color = '#ddd';
+    });
+}
+
+function initStarLogic() {
+    const container = document.getElementById('starRatingContainer');
+    if (!container) return;
+    
+    const labels = container.querySelectorAll('label');
+    const radios = container.querySelectorAll('input[type="radio"]');
+    
+    labels.forEach(label => {
+        label.addEventListener('click', function() {
+            const value = parseInt(this.dataset.value);
+            // Сбрасываем все звезды в серый
+            labels.forEach(l => l.style.color = '#ddd');
+            // Зажигаем звезды до выбранной
+            labels.forEach(l => {
+                if (parseInt(l.dataset.value) <= value) {
+                    l.style.color = '#bb8230';
+                }
+            });
+        });
+    });
+}
+
+// ============================================================
+// ОБРАБОТКА ОТПРАВКИ ОТЗЫВА
 // ============================================================
 document.addEventListener('submit', function(e) {
     if (e.target && e.target.id === 'reviewForm') {
@@ -353,10 +390,8 @@ document.addEventListener('submit', function(e) {
         document.getElementById('reviewAuthor').value = '';
         document.getElementById('reviewText').value = '';
         document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
-        document.querySelectorAll('input[name="rating"]').forEach(r => {
-            const label = document.querySelector(`label[for="${r.id}"]`);
-            if (label) label.style.color = '#ddd';
-        });
+        
+        resetStars();
         
         renderProductReviews(productId);
         renderCatalog();
@@ -387,6 +422,7 @@ document.querySelectorAll('[data-tab]').forEach(link => {
                 document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
                 document.getElementById('product').classList.add('active');
                 renderProductDetail(productId);
+                setTimeout(initStarLogic, 200);
             }
             e.preventDefault();
             return;
@@ -479,14 +515,12 @@ document.getElementById('todoForm')?.addEventListener('submit', function(e) {
     this.reset();
 });
 
-// ============================================================
-// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
-// ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     renderCatalog();
     renderAllReviews();
     renderTodo();
+    setTimeout(initStarLogic, 300);
 });
 
-console.log('✅ app.js загружен');
+console.log('✅ app.js загружен (финальная версия)');
 console.log(`📦 ${products.length} товаров в каталоге`);
