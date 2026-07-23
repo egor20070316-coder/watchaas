@@ -29,7 +29,8 @@
         <a href="#catalog" data-tab="catalog">Каталог</a>
         <a href="#reviews" data-tab="reviews">Отзывы</a>
         <a href="#todo" data-tab="todo">ToDoList</a>
-        <a href="login.html" class="login-link">🔑 Войти</a>
+        <!-- Ссылка на вход/профиль будет меняться через JS -->
+        <a id="authLink" href="login.html" class="login-link">🔑 Войти</a>
       </nav>
     </div>
   </header>
@@ -151,5 +152,34 @@
       <span>Учебный магазин часов</span>
     </div>
   </footer>
+
+  <!-- СКРИПТ ДЛЯ ПРОВЕРКИ АВТОРИЗАЦИИ В ШАПКЕ -->
+  <script>
+    // Проверяем, залогинен ли пользователь
+    (function checkAuthStatus() {
+        const savedUser = localStorage.getItem('watchaas_current_user');
+        const authLink = document.getElementById('authLink');
+        
+        if (savedUser) {
+            try {
+                const user = JSON.parse(savedUser);
+                // Меняем ссылку на имя пользователя + "выйти"
+                authLink.innerHTML = `👤 ${user.name} (выйти)`;
+                authLink.href = '#';
+                authLink.style.color = 'var(--color-accent)';
+                
+                // При клике на "выйти" — разлогиниваем
+                authLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('watchaas_current_user');
+                    window.location.href = 'index.html';
+                });
+            } catch {
+                // Если ошибка — оставляем как есть
+            }
+        }
+    })();
+  </script>
+
 </body>
 </html>
