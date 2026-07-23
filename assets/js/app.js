@@ -1,7 +1,3 @@
-// ============================================================
-// app.js — РАБОЧАЯ ВЕРСИЯ С ОТЗЫВАМИ
-// ============================================================
-
 const products = [
   { id: 1, brand: 'Casio', model: 'G-Shock GA-2100-1A1ER', price: 13990, oldPrice: 16990, image: 'real-01.jpg' },
   { id: 2, brand: 'Tissot', model: 'PRX Quartz 40', price: 54900, oldPrice: null, image: 'real-02.jpg' },
