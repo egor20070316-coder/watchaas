@@ -330,40 +330,61 @@ function renderAllReviews() {
 }
 
 // ============================================================
-// ИНИЦИАЛИЗАЦИЯ ЗВЕЗДНОГО РЕЙТИНГА В ФОРМЕ
+// ФУНКЦИЯ ДЛЯ ПРИНУДИТЕЛЬНОЙ ИНИЦИАЛИЗАЦИИ ЗВЕЗД
 // ============================================================
-function initStarRating() {
+function forceInitStars() {
     const stars = document.querySelectorAll('#starRating span');
     const ratingInput = document.getElementById('reviewRating');
     
-    if (!stars.length || !ratingInput) return;
+    if (!stars.length || !ratingInput) {
+        console.log('⭐ Звезды не найдены');
+        return false;
+    }
     
+    console.log('⭐ Найдено звезд:', stars.length);
+    
+    // Удаляем старые обработчики
     stars.forEach(star => {
+        star.replaceWith(star.cloneNode(true));
+    });
+    
+    // Получаем свежие ссылки
+    const freshStars = document.querySelectorAll('#starRating span');
+    const freshRatingInput = document.getElementById('reviewRating');
+    
+    freshStars.forEach(star => {
+        // Наведение мыши
         star.addEventListener('mouseenter', function() {
             const value = parseInt(this.dataset.star);
-            stars.forEach(s => {
+            freshStars.forEach(s => {
                 const val = parseInt(s.dataset.star);
                 s.style.color = val <= value ? '#bb8230' : '#ddd';
             });
         });
         
+        // Уход мыши
         star.addEventListener('mouseleave', function() {
-            const current = parseInt(ratingInput.value);
-            stars.forEach(s => {
+            const current = parseInt(freshRatingInput.value);
+            freshStars.forEach(s => {
                 const val = parseInt(s.dataset.star);
                 s.style.color = val <= current ? '#bb8230' : '#ddd';
             });
         });
         
+        // Клик
         star.addEventListener('click', function() {
             const value = parseInt(this.dataset.star);
-            ratingInput.value = value;
-            stars.forEach(s => {
+            freshRatingInput.value = value;
+            freshStars.forEach(s => {
                 const val = parseInt(s.dataset.star);
                 s.style.color = val <= value ? '#bb8230' : '#ddd';
             });
+            console.log('⭐ Оценка:', value);
         });
     });
+    
+    console.log('⭐ Звезды инициализированы!');
+    return true;
 }
 
 // ============================================================
@@ -407,7 +428,6 @@ document.querySelectorAll('[data-tab]').forEach(link => {
         const tab = this.dataset.tab;
         
         if (tab === 'home') {
-            // Показываем главную
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
             document.getElementById('home').classList.add('active');
             document.querySelectorAll('.main-nav a').forEach(a => a.classList.remove('active'));
@@ -415,15 +435,13 @@ document.querySelectorAll('[data-tab]').forEach(link => {
             return;
         }
         
-        // Обработка товара
         if (tab === 'product') {
             const productId = parseInt(this.href.split('#product-')[1]);
             if (productId) {
                 document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
                 document.getElementById('product').classList.add('active');
                 renderProductDetail(productId);
-                // Переинициализируем звёзды
-                setTimeout(initStarRating, 100);
+                setTimeout(forceInitStars, 300);
             }
             e.preventDefault();
             return;
@@ -517,20 +535,21 @@ document.getElementById('todoForm')?.addEventListener('submit', function(e) {
 });
 
 // ============================================================
-// ФИЛЬТРЫ КАТАЛОГА
-// ============================================================
-document.getElementById('catalogFilters')?.addEventListener('input', function() {
-    // Простая фильтрация — можно добавить позже
-});
-
-// ============================================================
-// ЗАГРУЗКА КАТАЛОГА ПРИ СТАРТЕ
+// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ СТРАНИЦЫ
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     renderCatalog();
     renderAllReviews();
     renderTodo();
-    initStarRating();
+    setTimeout(forceInitStars, 500);
+});
+
+// Инициализация звезд при клике на карточку товара (дополнительная страховка)
+document.addEventListener('click', function(e) {
+    const link = e.target.closest('.product-card__link');
+    if (link && link.dataset.productId) {
+        setTimeout(forceInitStars, 400);
+    }
 });
 
 console.log('✅ app.js загружен');
