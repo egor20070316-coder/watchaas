@@ -86,41 +86,6 @@
       <div class="container">
         <a class="back-link" href="#catalog" data-tab="catalog">← Назад в каталог</a>
         <div id="productDetail"></div>
-        
-        <!-- БЛОК ОТЗЫВОВ ПОД ТОВАРОМ -->
-        <div id="productReviewsBlock" style="margin-top: 40px; border-top: 1px solid var(--color-border); padding-top: 30px;">
-          <h2 style="font: 700 28px Georgia, serif;">Отзывы о модели</h2>
-          
-          <div class="form-card" style="margin-bottom: 30px;">
-            <h3>Оставить отзыв</h3>
-            <form id="reviewForm">
-              <div class="form-group" style="margin-bottom: 15px;">
-                <label for="reviewAuthor">Ваше имя</label>
-                <input type="text" id="reviewAuthor" placeholder="Введите ваше имя" required>
-              </div>
-              <div class="form-group" style="margin-bottom: 15px;">
-                <label>Ваша оценка</label>
-                <div class="stars-container" style="display: flex; gap: 8px; font-size: 40px; flex-direction: row-reverse; justify-content: flex-end;">
-                  <span class="star" data-value="5" style="cursor: pointer; color: #ddd;">☆</span>
-                  <span class="star" data-value="4" style="cursor: pointer; color: #ddd;">☆</span>
-                  <span class="star" data-value="3" style="cursor: pointer; color: #ddd;">☆</span>
-                  <span class="star" data-value="2" style="cursor: pointer; color: #ddd;">☆</span>
-                  <span class="star" data-value="1" style="cursor: pointer; color: #ddd;">☆</span>
-                </div>
-                <input type="hidden" id="reviewRating" value="0">
-              </div>
-              <div class="form-group" style="margin-bottom: 15px;">
-                <label for="reviewText">Текст отзыва</label>
-                <textarea id="reviewText" rows="3" placeholder="Поделитесь впечатлениями о часах..." required></textarea>
-              </div>
-              <button type="submit" class="button">Отправить отзыв</button>
-            </form>
-          </div>
-          
-          <div id="productReviewsList">
-            <p style="color: var(--color-muted);">Пока нет отзывов. Будьте первым!</p>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -128,8 +93,7 @@
       <div class="container">
         <div class="page-heading">
           <span class="eyebrow">Отзывы покупателей</span>
-          <h1>Все отзывы</h1>
-          <p id="reviewsCount">Всего отзывов: 0</p>
+          <h1>Отзывы</h1>
         </div>
         <div class="reviews-layout">
           <div>
@@ -137,6 +101,7 @@
           </div>
           <aside class="form-card">
             <h2>Фильтр отзывов</h2>
+            <label>Дата<input type="date" id="reviewDateFilter"></label>
             <label>Сортировка<select id="reviewSort"><option value="desc">Новые сверху</option><option value="asc">Старые сверху</option></select></label>
             <button class="button" type="button" id="resetReviewFilter">Сбросить</button>
           </aside>
