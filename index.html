@@ -86,6 +86,40 @@
       <div class="container">
         <a class="back-link" href="#catalog" data-tab="catalog">← Назад в каталог</a>
         <div id="productDetail"></div>
+        
+        <div id="productReviewsBlock" style="margin-top: 40px; border-top: 1px solid var(--color-border); padding-top: 30px;">
+          <h2 style="font: 700 28px Georgia, serif;">Отзывы о модели</h2>
+          
+          <div class="form-card" style="margin-bottom: 30px;">
+            <h3>Оставить отзыв</h3>
+            <form id="reviewForm">
+              <div class="form-group" style="margin-bottom: 15px;">
+                <label for="reviewAuthor">Ваше имя</label>
+                <input type="text" id="reviewAuthor" placeholder="Введите ваше имя" required>
+              </div>
+              <div class="form-group" style="margin-bottom: 15px;">
+                <label>Ваша оценка</label>
+                <div class="stars-container" style="display: flex; gap: 8px; font-size: 40px; flex-direction: row-reverse; justify-content: flex-end;">
+                  <span class="star" data-value="5" style="cursor: pointer; color: #ddd;">☆</span>
+                  <span class="star" data-value="4" style="cursor: pointer; color: #ddd;">☆</span>
+                  <span class="star" data-value="3" style="cursor: pointer; color: #ddd;">☆</span>
+                  <span class="star" data-value="2" style="cursor: pointer; color: #ddd;">☆</span>
+                  <span class="star" data-value="1" style="cursor: pointer; color: #ddd;">☆</span>
+                </div>
+                <input type="hidden" id="reviewRating" value="0">
+              </div>
+              <div class="form-group" style="margin-bottom: 15px;">
+                <label for="reviewText">Текст отзыва</label>
+                <textarea id="reviewText" rows="3" placeholder="Поделитесь впечатлениями о часах..." required></textarea>
+              </div>
+              <button type="submit" class="button">Отправить отзыв</button>
+            </form>
+          </div>
+          
+          <div id="productReviewsList">
+            <p style="color: var(--color-muted);">Пока нет отзывов. Будьте первым!</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -93,7 +127,8 @@
       <div class="container">
         <div class="page-heading">
           <span class="eyebrow">Отзывы покупателей</span>
-          <h1>Отзывы</h1>
+          <h1>Все отзывы</h1>
+          <p id="reviewsCount">Всего отзывов: 0</p>
         </div>
         <div class="reviews-layout">
           <div>
@@ -101,7 +136,6 @@
           </div>
           <aside class="form-card">
             <h2>Фильтр отзывов</h2>
-            <label>Дата<input type="date" id="reviewDateFilter"></label>
             <label>Сортировка<select id="reviewSort"><option value="desc">Новые сверху</option><option value="asc">Старые сверху</option></select></label>
             <button class="button" type="button" id="resetReviewFilter">Сбросить</button>
           </aside>
@@ -135,9 +169,39 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-contacts">
-      <span>watchaas@mail.ru</span>
-      <span>Учебный магазин часов</span>
+    <div class="container">
+      <!-- Контакты -->
+      <div class="footer-contacts">
+        <span>watchaas@mail.ru</span>
+        <span>Учебный магазин часов</span>
+      </div>
+      
+      <!-- ОПИСАНИЕ ПРОЕКТА (как в README) -->
+      <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #34322f; color: #d5d0c8; font-size: 14px; line-height: 1.8;">
+        <h3 style="color: #e8c88e; font-size: 18px; margin-bottom: 10px;">📖 О проекте Watchaas</h3>
+        <p><strong>Watchaas</strong> — это мой учебный сайт магазина наручных часов. Я делал его как небольшую витрину: на сайте можно открыть каталог, выбрать модель часов, посмотреть карточку товара, почитать отзывы и вести список задач.</p>
+        <p>Проект написан без PHP и базы данных, поэтому он нормально запускается на GitHub Pages. Все данные для каталога, отзывов и задач работают на стороне браузера (localStorage).</p>
+        
+        <h4 style="color: #e8c88e; margin-top: 15px; font-size: 15px;">Что есть на сайте:</h4>
+        <ul style="padding-left: 20px; margin: 5px 0;">
+          <li>Главная страница с кратким описанием магазина</li>
+          <li>Каталог из 10 моделей часов с фильтрами по бренду, механизму и цене</li>
+          <li>Карточка товара с характеристиками</li>
+          <li>Раздел с отзывами (можно оставить свой отзыв под каждой моделью)</li>
+          <li>ToDoList для управления задачами</li>
+          <li>Регистрация и вход (данные хранятся в localStorage)</li>
+          <li>Админ-панель для просмотра пользователей</li>
+          <li>Экспорт пользователей в Excel</li>
+          <li>PWA — установка на телефон как приложение</li>
+        </ul>
+        
+        <p style="margin-top: 10px; font-size: 12px; color: #746f68;">
+          Сайт опубликован на GitHub Pages: 
+          <a href="https://egor20070316-coder.github.io/watchaas/" style="color: #b68b4c; text-decoration: underline;">
+            https://egor20070316-coder.github.io/watchaas/
+          </a>
+        </p>
+      </div>
     </div>
   </footer>
 
