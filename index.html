@@ -1,185 +1,43 @@
-<!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Приложение магазина часов Watchaas">
-  <meta name="theme-color" content="#171716">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Watchaas">
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="assets/img/icons/pwa-icon-192.png">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script src="assets/js/database.js" defer></script>
-  <script src="assets/js/auth.js" defer></script>
-  <script src="assets/js/app.js" defer></script>
-  <title>Watchaas</title>
-</head>
-<body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="#home" data-tab="home">
-        <img src="assets/img/logo.svg" alt="" width="42" height="42">
-        <span><strong>Watchaas</strong><small>Магазин наручных часов от АСУ</small></span>
-      </a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mainNav">Меню</button>
-      <nav id="mainNav" class="main-nav" aria-label="Основная навигация">
-        <a class="active" href="#home" data-tab="home">Главная</a>
-        <a href="#catalog" data-tab="catalog">Каталог</a>
-        <a href="#reviews" data-tab="reviews">Отзывы</a>
-        <a href="#todo" data-tab="todo">ToDoList</a>
-        <!-- Ссылка на вход/профиль будет меняться через JS -->
-        <a id="authLink" href="login.html" class="login-link">🔑 Войти</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero tab-section active" id="home">
-      <div class="container hero-grid">
-        <div>
-          <span class="eyebrow">Время выбирать лучшее</span>
-          <h1>Часы, которые подчёркивают ваш характер</h1>
-          <p>Классические, спортивные и современные модели в одном понятном каталоге. Каталог работает прямо в браузере, а список задач сохраняется на этом устройстве.</p>
-          <div class="button-row">
-            <a class="button" href="#catalog" data-tab="catalog">Открыть каталог часов</a>
-            <a class="button button--ghost" href="#todo" data-tab="todo">Список задач</a>
-          </div>
-        </div>
-        <a class="hero__logo-link" href="#catalog" data-tab="catalog" aria-label="Открыть каталог часов">
-          <img class="hero__logo" src="assets/img/watchaas-logo.png" alt="Watchaas">
-        </a>
-      </div>
-    </section>
-
-    <section class="section tab-section" id="catalog">
-      <div class="container">
-        <div class="page-heading">
-          <span class="eyebrow">Коллекция Watchaas</span>
-          <h1>Каталог часов</h1>
-          <p>Все цены и модели приведены в учебных целях. Нажмите на карточку, чтобы открыть подробности.</p>
-        </div>
-        <div class="catalog-layout">
-          <aside class="filters">
-            <form id="catalogFilters">
-              <h2>Фильтры</h2>
-              <label>Поиск<input id="searchFilter" placeholder="Модель или бренд"></label>
-              <label>Бренд<select id="brandFilter"><option value="">Все бренды</option></select></label>
-              <label>Механизм<select id="mechanismFilter"><option value="">Все</option><option>Кварцевый</option><option>Механический</option><option>Электронный</option></select></label>
-              <div class="form-row">
-                <label>Цена от<input type="number" id="minPriceFilter" min="0"></label>
-                <label>до<input type="number" id="maxPriceFilter" min="0"></label>
-              </div>
-              <label>Сортировка<select id="sortFilter"><option value="">По умолчанию</option><option value="price_asc">Сначала дешевле</option><option value="price_desc">Сначала дороже</option></select></label>
-              <button class="button" type="reset">Сбросить фильтры</button>
-            </form>
-          </aside>
-          <section>
-            <div class="results" id="productCount"><b>Найдено: 10</b></div>
-            <div class="product-grid product-grid--catalog" id="productGrid">
-              <article class="product-card"><a class="product-card__link" href="#product-1" aria-label="Открыть Casio G-Shock GA-2100-1A1ER"><span class="product-card__image"><img src="assets/img/watches/real-01.jpg" alt="Casio G-Shock GA-2100-1A1ER"></span><div class="product-card__body"><small>Casio</small><h3>G-Shock GA-2100-1A1ER</h3><p>Мужские · Кварцевый</p><div class="rating">★★★★★ <small>(0)</small></div><div class="price">13 990 ₽<del>16 990 ₽</del></div></div></a></article>
-              <article class="product-card"><a class="product-card__link" href="#product-2" aria-label="Открыть Tissot PRX Quartz 40"><span class="product-card__image"><img src="assets/img/watches/real-02.jpg" alt="Tissot PRX Quartz 40"></span><div class="product-card__body"><small>Tissot</small><h3>PRX Quartz 40</h3><p>Унисекс · Кварцевый</p><div class="rating">★★★★★ <small>(0)</small></div><div class="price">54 900 ₽</div></div></a></article>
-              <article class="product-card"><a class="product-card__link" href="#product-3" aria-label="Открыть Casio F-91W"><span class="product-card__image"><img src="assets/img/watches/real-03.jpg" alt="Casio F-91W"></span><div class="product-card__body"><small>Casio</small><h3>F-91W</h3><p>Унисекс · Электронный</p><div class="rating">★★★★★ <small>(1)</small></div><div class="price">3 490 ₽<del>4 490 ₽</del></div></div></a></article>
-              <article class="product-card"><a class="product-card__link" href="#product-4" aria-label="Открыть Seiko SKX007"><span class="product-card__image"><img src="assets/img/watches/real-04.jpg" alt="Seiko SKX007"></span><div class="product-card__body"><small>Seiko</small><h3>SKX007</h3><p>Мужские · Механический</p><div class="rating">★★★★★ <small>(0)</small></div><div class="price">52 990 ₽</div></div></a></article>
-              <article class="product-card"><a class="product-card__link" href="#product-5" aria-label="Открыть Omega Speedmaster Professional"><span class="product-card__image"><img src="assets/img/watches/real-05.jpg" alt="Omega Speedmaster Professional"></span><div class="product-card__body"><small>Omega</small><h3>Speedmaster Professional</h3><p>Мужские · Механический</p><div class="rating">★★★★★ <small>(0)</small></div><div class="price">849 900 ₽<del>899 900 ₽</del></div></div></a></article>
-              <article class="product-card"><a class="product-card__link" href="#product-6" aria-label="Открыть Rolex Submariner Date 16610"><span class="product-card__image"><img src="assets/img/watches/real-06.jpg" alt="Rolex Submariner Date 16610"></span><div class="product-card__body"><small>Rolex</small><h3>Submariner Date 16610</h3><p>Мужские · Механический</p><div class="rating">★★★★☆ <small>(1)</small></div><div class="price">1 290 000 ₽</div></div></a></article>
-              <article class="product-card"><a class="product-card__link" href="#product-7" aria-label="Открыть Hamilton Khaki X-Patrol H76566151"><span class="product-card__image"><img src="assets/img/watches/real-08.jpg" alt="Hamilton Khaki X-Patrol H76566151"></span><div class="product-card__body"><small>Hamilton</small><h3>Khaki X-Patrol H76566151</h3><p>Мужские · Механический</p><div class="rating">★★★★★ <small>(1)</small></div><div class="price">169 900 ₽</div></div></a></article>
-              <article class="product-card"><a class="product-card__link" href="#product-8" aria-label="Открыть Восток Амфибия 090916"><span class="product-card__image"><img src="assets/img/watches/real-09.jpg" alt="Восток Амфибия 090916"></span><div class="product-card__body"><small>Восток</small><h3>Амфибия 090916</h3><p>Мужские · Механический</p><div class="rating">★★★★★ <small>(0)</small></div><div class="price">12 990 ₽<del>14 990 ₽</del></div></div></a></article>
-              <article class="product-card"><a class="product-card__link" href="#product-9" aria-label="Открыть Citizen Eco-Drive AS2031-57E"><span class="product-card__image"><img src="assets/img/watches/real-10.jpg" alt="Citizen Eco-Drive AS2031-57E"></span><div class="product-card__body"><small>Citizen</small><h3>Eco-Drive AS2031-57E</h3><p>Мужские · Кварцевый</p><div class="rating">★★★★☆ <small>(1)</small></div><div class="price">89 900 ₽</div></div></a></article>
-              <article class="product-card"><a class="product-card__link" href="#product-10" aria-label="Открыть Cartier Tank Must 2021"><span class="product-card__image"><img src="assets/img/watches/real-11.jpg" alt="Cartier Tank Must 2021"></span><div class="product-card__body"><small>Cartier</small><h3>Tank Must 2021</h3><p>Унисекс · Кварцевый</p><div class="rating">★★★★★ <small>(1)</small></div><div class="price">399 000 ₽<del>429 000 ₽</del></div></div></a></article>
+<section class="section tab-section" id="product">
+  <div class="container">
+    <a class="back-link" href="#catalog" data-tab="catalog">← Назад в каталог</a>
+    <div id="productDetail"></div>
+    
+    <!-- БЛОК ДЛЯ ОТЗЫВОВ О ТОВАРЕ -->
+    <div id="productReviews" style="margin-top: 40px; border-top: 1px solid var(--color-border); padding-top: 30px;">
+      <h2 style="font: 700 28px Georgia, serif;">Отзывы о модели</h2>
+      
+      <!-- Форма добавления отзыва -->
+      <div class="form-card" style="margin-bottom: 30px;">
+        <h3>Оставить отзыв</h3>
+        <form id="reviewForm">
+          <div class="form-group" style="margin-bottom: 15px;">
+            <label>Ваша оценка</label>
+            <div id="starRating" style="display: flex; gap: 8px; font-size: 32px; cursor: pointer;">
+              <span data-star="1" style="color: #ddd;">☆</span>
+              <span data-star="2" style="color: #ddd;">☆</span>
+              <span data-star="3" style="color: #ddd;">☆</span>
+              <span data-star="4" style="color: #ddd;">☆</span>
+              <span data-star="5" style="color: #ddd;">☆</span>
             </div>
-          </section>
-        </div>
-      </div>
-    </section>
-
-    <section class="section tab-section" id="product">
-      <div class="container">
-        <a class="back-link" href="#catalog" data-tab="catalog">← Назад в каталог</a>
-        <div id="productDetail"></div>
-      </div>
-    </section>
-
-    <section class="section tab-section" id="reviews">
-      <div class="container">
-        <div class="page-heading">
-          <span class="eyebrow">Отзывы покупателей</span>
-          <h1>Отзывы</h1>
-        </div>
-        <div class="reviews-layout">
-          <div>
-            <div class="review-grid" id="reviewList"></div>
+            <input type="hidden" id="reviewRating" value="0">
           </div>
-          <aside class="form-card">
-            <h2>Фильтр отзывов</h2>
-            <label>Дата<input type="date" id="reviewDateFilter"></label>
-            <label>Сортировка<select id="reviewSort"><option value="desc">Новые сверху</option><option value="asc">Старые сверху</option></select></label>
-            <button class="button" type="button" id="resetReviewFilter">Сбросить</button>
-          </aside>
-        </div>
+          <div class="form-group" style="margin-bottom: 15px;">
+            <label for="reviewAuthor">Ваше имя</label>
+            <input type="text" id="reviewAuthor" placeholder="Введите ваше имя" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 15px;">
+            <label for="reviewText">Текст отзыва</label>
+            <textarea id="reviewText" rows="3" placeholder="Поделитесь впечатлениями о часах..." required></textarea>
+          </div>
+          <button type="submit" class="button">Отправить отзыв</button>
+        </form>
       </div>
-    </section>
-
-    <section class="section tab-section" id="todo">
-      <div class="container">
-        <div class="page-heading">
-          <span class="eyebrow">LocalStorage</span>
-          <h1>ToDoList</h1>
-        </div>
-        <div class="todo-layout">
-          <form class="form-card" id="todoForm">
-            <h2>Новая задача</h2>
-            <label>Название<input id="todoTitle" type="text" placeholder="Например: выбрать подарок" required></label>
-            <label>Дата<input id="todoDate" type="date" required></label>
-            <button class="button" type="submit">Добавить</button>
-          </form>
-          <section>
-            <div class="todo-toolbar">
-              <label>Фильтр по дате<input type="date" id="todoDateFilter"></label>
-              <label>Сортировка<select id="todoSort"><option value="">По умолчанию</option><option value="asc">Дата вверх</option><option value="desc">Дата вниз</option></select></label>
-            </div>
-            <div class="task-list" id="todoList"></div>
-          </section>
-        </div>
+      
+      <!-- Список отзывов о товаре -->
+      <div id="productReviewsList">
+        <p style="color: var(--color-muted);">Пока нет отзывов. Будьте первым!</p>
       </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-contacts">
-      <span>watchaas@mail.ru</span>
-      <span>Учебный магазин часов</span>
     </div>
-  </footer>
-
-  <!-- СКРИПТ ДЛЯ ПРОВЕРКИ АВТОРИЗАЦИИ В ШАПКЕ -->
-  <script>
-    // Проверяем, залогинен ли пользователь
-    (function checkAuthStatus() {
-        const savedUser = localStorage.getItem('watchaas_current_user');
-        const authLink = document.getElementById('authLink');
-        
-        if (savedUser) {
-            try {
-                const user = JSON.parse(savedUser);
-                // Меняем ссылку на имя пользователя + "выйти"
-                authLink.innerHTML = `👤 ${user.name} (выйти)`;
-                authLink.href = '#';
-                authLink.style.color = 'var(--color-accent)';
-                
-                // При клике на "выйти" — разлогиниваем
-                authLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    localStorage.removeItem('watchaas_current_user');
-                    window.location.href = 'index.html';
-                });
-            } catch {
-                // Если ошибка — оставляем как есть
-            }
-        }
-    })();
-  </script>
-
-</body>
-</html>
+  </div>
+</section>
