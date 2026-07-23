@@ -1,5 +1,13 @@
+// ============================================================
+// auth.js — логика регистрации, входа и выхода
+// ============================================================
+
+// Текущий пользователь (сессия)
 let currentUser = null;
 
+// ============================================================
+// Получение элементов DOM
+// ============================================================
 const form = document.getElementById('auth-form');
 const formTitle = document.getElementById('form-title');
 const formSubtitle = document.getElementById('form-subtitle');
@@ -13,8 +21,12 @@ const passwordInput = document.getElementById('password');
 const errorMsg = document.getElementById('error-msg');
 const successMsg = document.getElementById('success-msg');
 
+// Режим: 'login' или 'register'
 let currentMode = 'login';
 
+// ============================================================
+// Переключение между входом и регистрацией
+// ============================================================
 function switchMode(mode) {
     currentMode = mode;
 
@@ -41,6 +53,9 @@ function switchMode(mode) {
     hideMessages();
 }
 
+// ============================================================
+// Показать/скрыть сообщения
+// ============================================================
 function showError(msg) {
     errorMsg.textContent = msg;
     errorMsg.style.display = 'block';
@@ -58,6 +73,9 @@ function hideMessages() {
     successMsg.style.display = 'none';
 }
 
+// ============================================================
+// Обработка отправки формы
+// ============================================================
 form.addEventListener('submit', function(e) {
     e.preventDefault();
     hideMessages();
@@ -65,16 +83,19 @@ form.addEventListener('submit', function(e) {
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
 
+    // Проверка на пустые поля
     if (!email || !password) {
         showError('Пожалуйста, заполните все поля');
         return;
     }
 
+    // Проверка длины пароля
     if (password.length < 6) {
         showError('Пароль должен содержать минимум 6 символов');
         return;
     }
 
+    // ===== ВХОД =====
     if (currentMode === 'login') {
         const user = DB.authenticate(email, password);
         
@@ -82,6 +103,7 @@ form.addEventListener('submit', function(e) {
             currentUser = user;
             showSuccess(`Добро пожаловать, ${user.name}! 🎉`);
             
+            // Сохраняем сессию
             localStorage.setItem('watchaas_current_user', JSON.stringify(user));
             
             // Перенаправляем на главную через 1 секунду
@@ -93,6 +115,7 @@ form.addEventListener('submit', function(e) {
         }
     }
 
+    // ===== РЕГИСТРАЦИЯ =====
     else {
         const name = fullnameInput.value.trim();
         
@@ -106,10 +129,12 @@ form.addEventListener('submit', function(e) {
         if (result.success) {
             showSuccess(`Аккаунт создан! Добро пожаловать, ${name}! 🎉`);
             
+            // Очищаем поля
             fullnameInput.value = '';
             emailInput.value = '';
             passwordInput.value = '';
             
+            // Переключаемся на вход через 1.5 секунды
             setTimeout(() => {
                 switchMode('login');
                 hideMessages();
@@ -122,6 +147,9 @@ form.addEventListener('submit', function(e) {
     }
 });
 
+// ============================================================
+// Переключение режима при клике на ссылку
+// ============================================================
 switchLink.addEventListener('click', function(e) {
     e.preventDefault();
     hideMessages();
@@ -133,6 +161,9 @@ switchLink.addEventListener('click', function(e) {
     }
 });
 
+// ============================================================
+// Проверка сессии при загрузке страницы
+// ============================================================
 function checkSession() {
     const savedUser = localStorage.getItem('watchaas_current_user');
     
@@ -140,16 +171,21 @@ function checkSession() {
         try {
             currentUser = JSON.parse(savedUser);
             
+            // Проверяем, существует ли пользователь в БД
             const userInDB = DB.findByEmail(currentUser.email);
             
             if (userInDB) {
                 currentUser = userInDB;
+                // Если пользователь уже залогинен — НЕ ПЕРЕНАПРАВЛЯЕМ на главную
+                // Просто показываем сообщение
                 showSuccess(`Вы уже вошли как ${currentUser.name}`);
-                
-                // Перенаправляем на главную через 1.5 секунды
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
+                // Меняем кнопку "Войти" на "Выйти"
+                const submitBtn = document.getElementById('submit-btn');
+                submitBtn.textContent = 'Выйти';
+                submitBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
             } else {
                 // Пользователь удалён из БД — очищаем сессию
                 localStorage.removeItem('watchaas_current_user');
@@ -168,10 +204,17 @@ function logout() {
     window.location.href = 'login.html';
 }
 
+// ============================================================
+// Получить текущего пользователя (для других скриптов)
+// ============================================================
 function getCurrentUser() {
     return currentUser;
 }
 
+// ============================================================
+// Инициализация
+// ============================================================
+// Проверяем сессию
 checkSession();
 
 // Устанавливаем режим по умолчанию
