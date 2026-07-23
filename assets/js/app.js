@@ -1,5 +1,5 @@
 // ============================================================
-// app.js — ПОЛНАЯ ЛОГИКА (ФИНАЛ)
+// app.js — РАБОЧАЯ ВЕРСИЯ (ФИНАЛ)
 // ============================================================
 
 // ============================================================
@@ -173,7 +173,7 @@ function addReview(productId, author, rating, text) {
     const reviews = getReviews();
     const newReview = {
         id: Date.now().toString(),
-        productId: productId,
+        productId: parseInt(productId),
         author: author.trim(),
         rating: parseInt(rating),
         text: text.trim(),
@@ -186,7 +186,7 @@ function addReview(productId, author, rating, text) {
 
 function getReviewsByProduct(productId) {
     const reviews = getReviews();
-    return reviews.filter(r => r.productId === productId);
+    return reviews.filter(r => r.productId === parseInt(productId));
 }
 
 function getAverageRating(productId) {
@@ -204,6 +204,43 @@ function renderStars(rating) {
     const full = Math.floor(rating);
     const empty = 5 - full;
     return '★'.repeat(full) + '☆'.repeat(empty);
+}
+
+// ============================================================
+// ЗВЕЗДЫ — РАБОЧАЯ ЛОГИКА
+// ============================================================
+function initStars() {
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('reviewRating');
+    
+    if (!stars.length || !ratingInput) return;
+    
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const value = parseInt(this.dataset.value);
+            ratingInput.value = value;
+            stars.forEach(s => {
+                const val = parseInt(s.dataset.value);
+                s.style.color = val <= value ? '#bb8230' : '#ddd';
+            });
+        });
+        
+        star.addEventListener('mouseenter', function() {
+            const value = parseInt(this.dataset.value);
+            stars.forEach(s => {
+                const val = parseInt(s.dataset.value);
+                s.style.color = val <= value ? '#bb8230' : '#ddd';
+            });
+        });
+        
+        star.addEventListener('mouseleave', function() {
+            const current = parseInt(ratingInput.value);
+            stars.forEach(s => {
+                const val = parseInt(s.dataset.value);
+                s.style.color = val <= current ? '#bb8230' : '#ddd';
+            });
+        });
+    });
 }
 
 // ============================================================
@@ -272,7 +309,7 @@ function renderProductDetail(productId) {
     `;
 
     renderProductReviews(productId);
-    resetStars();
+    setTimeout(initStars, 100);
 }
 
 // ============================================================
@@ -280,6 +317,7 @@ function renderProductDetail(productId) {
 // ============================================================
 function renderProductReviews(productId) {
     const container = document.getElementById('productReviewsList');
+    if (!container) return;
     const reviews = getReviewsByProduct(productId);
     
     if (reviews.length === 0) {
@@ -333,38 +371,6 @@ function renderAllReviews() {
 }
 
 // ============================================================
-// ЗВЕЗДЫ — ЛОГИКА
-// ============================================================
-function resetStars() {
-    const labels = document.querySelectorAll('#starRatingContainer label');
-    labels.forEach(label => {
-        label.style.color = '#ddd';
-    });
-}
-
-function initStarLogic() {
-    const container = document.getElementById('starRatingContainer');
-    if (!container) return;
-    
-    const labels = container.querySelectorAll('label');
-    const radios = container.querySelectorAll('input[type="radio"]');
-    
-    labels.forEach(label => {
-        label.addEventListener('click', function() {
-            const value = parseInt(this.dataset.value);
-            // Сбрасываем все звезды в серый
-            labels.forEach(l => l.style.color = '#ddd');
-            // Зажигаем звезды до выбранной
-            labels.forEach(l => {
-                if (parseInt(l.dataset.value) <= value) {
-                    l.style.color = '#bb8230';
-                }
-            });
-        });
-    });
-}
-
-// ============================================================
 // ОБРАБОТКА ОТПРАВКИ ОТЗЫВА
 // ============================================================
 document.addEventListener('submit', function(e) {
@@ -372,12 +378,9 @@ document.addEventListener('submit', function(e) {
         e.preventDefault();
         
         const detailContainer = document.getElementById('productDetail');
-        const productId = parseInt(detailContainer.dataset.productId);
+        const productId = detailContainer.dataset.productId;
         const author = document.getElementById('reviewAuthor').value.trim();
-        
-        const ratingInput = document.querySelector('input[name="rating"]:checked');
-        const rating = ratingInput ? ratingInput.value : '0';
-        
+        const rating = document.getElementById('reviewRating').value;
         const text = document.getElementById('reviewText').value.trim();
         
         if (!author || !rating || rating === '0' || !text) {
@@ -389,11 +392,10 @@ document.addEventListener('submit', function(e) {
         
         document.getElementById('reviewAuthor').value = '';
         document.getElementById('reviewText').value = '';
-        document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
+        document.getElementById('reviewRating').value = '0';
+        document.querySelectorAll('.star').forEach(s => s.style.color = '#ddd');
         
-        resetStars();
-        
-        renderProductReviews(productId);
+        renderProductReviews(parseInt(productId));
         renderCatalog();
         renderAllReviews();
         
@@ -422,7 +424,6 @@ document.querySelectorAll('[data-tab]').forEach(link => {
                 document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
                 document.getElementById('product').classList.add('active');
                 renderProductDetail(productId);
-                setTimeout(initStarLogic, 200);
             }
             e.preventDefault();
             return;
@@ -475,6 +476,7 @@ function saveTasks(tasks) {
 
 function renderTodo() {
     const list = document.getElementById('todoList');
+    if (!list) return;
     const tasks = getTasks();
     
     if (tasks.length === 0) {
@@ -515,12 +517,14 @@ document.getElementById('todoForm')?.addEventListener('submit', function(e) {
     this.reset();
 });
 
+// ============================================================
+// ИНИЦИАЛИЗАЦИЯ
+// ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     renderCatalog();
     renderAllReviews();
     renderTodo();
-    setTimeout(initStarLogic, 300);
+    setTimeout(initStars, 300);
 });
 
-console.log('✅ app.js загружен (финальная версия)');
-console.log(`📦 ${products.length} товаров в каталоге`);
+console.log('✅ app.js загружен (100% рабочая версия)');
