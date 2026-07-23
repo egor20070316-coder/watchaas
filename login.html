@@ -6,7 +6,6 @@
     <title>Вход / Регистрация — Watchaas</title>
     <link rel="stylesheet" href="resources/css/style.css" />
     <style>
-        /* Стили для страницы входа */
         .auth-page {
             min-height: 100vh;
             display: flex;
@@ -104,13 +103,6 @@
         .back-to-site:hover {
             color: var(--color-accent-dark);
         }
-        .auth-container .form-row {
-            display: flex;
-            gap: 10px;
-        }
-        .auth-container .form-row .form-group {
-            flex: 1;
-        }
     </style>
 </head>
 <body>
@@ -118,44 +110,35 @@
 <div class="auth-page">
     <div class="auth-container">
 
-        <!-- Ссылка назад на главную -->
         <a href="index.html" class="back-to-site">← На главную</a>
 
-        <!-- Заголовок -->
         <h1 id="form-title">Вход</h1>
         <p id="form-subtitle">Войдите в свой аккаунт, чтобы продолжить</p>
 
-        <!-- Сообщения -->
         <div id="error-msg" class="error-msg"></div>
         <div id="success-msg" class="success-msg"></div>
 
-        <!-- Форма -->
         <form id="auth-form">
 
-            <!-- Имя (только для регистрации) -->
             <div id="name-field" class="form-group hidden">
                 <label for="fullname">Имя</label>
                 <input type="text" id="fullname" placeholder="Введите ваше имя" autocomplete="name" />
             </div>
 
-            <!-- Email -->
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" placeholder="example@mail.com" required autocomplete="email" />
             </div>
 
-            <!-- Пароль -->
             <div class="form-group">
                 <label for="password">Пароль</label>
                 <input type="password" id="password" placeholder="Минимум 6 символов" required minlength="6" autocomplete="current-password" />
             </div>
 
-            <!-- Кнопка -->
             <button type="submit" class="button" id="submit-btn">Войти</button>
 
         </form>
 
-        <!-- Переключение режима -->
         <div class="switch-link">
             <span id="switch-text">Нет аккаунта?</span>
             <a id="switch-link">Зарегистрироваться</a>
@@ -164,9 +147,16 @@
     </div>
 </div>
 
-<!-- Подключаем скрипты -->
+<!-- ПОДКЛЮЧЕНИЕ СКРИПТОВ С ПРАВИЛЬНЫМИ ПУТЯМИ -->
 <script src="resources/js/database.js"></script>
 <script src="resources/js/auth.js"></script>
+
+<!-- ДОПОЛНИТЕЛЬНАЯ ПРОВЕРКА -->
+<script>
+    console.log('✅ login.html загружен');
+    console.log('📦 DB:', typeof DB !== 'undefined' ? 'загружена' : 'НЕ загружена');
+    console.log('🔐 auth:', typeof switchMode !== 'undefined' ? 'загружен' : 'НЕ загружен');
+</script>
 
 </body>
 </html>
