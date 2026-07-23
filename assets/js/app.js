@@ -269,7 +269,6 @@ function renderProductDetail(productId) {
         </div>
     `;
 
-    // Отображаем отзывы к этому товару
     renderProductReviews(productId);
 }
 
@@ -309,7 +308,6 @@ function renderAllReviews() {
         return;
     }
 
-    // Сортируем по дате (новые сверху)
     const sorted = [...reviews].sort((a, b) => new Date(b.date) - new Date(a.date));
     
     container.innerHTML = sorted.map(review => {
@@ -330,65 +328,7 @@ function renderAllReviews() {
 }
 
 // ============================================================
-// ФУНКЦИЯ ДЛЯ ПРИНУДИТЕЛЬНОЙ ИНИЦИАЛИЗАЦИИ ЗВЕЗД
-// ============================================================
-function forceInitStars() {
-    const stars = document.querySelectorAll('#starRating span');
-    const ratingInput = document.getElementById('reviewRating');
-    
-    if (!stars.length || !ratingInput) {
-        console.log('⭐ Звезды не найдены');
-        return false;
-    }
-    
-    console.log('⭐ Найдено звезд:', stars.length);
-    
-    // Удаляем старые обработчики
-    stars.forEach(star => {
-        star.replaceWith(star.cloneNode(true));
-    });
-    
-    // Получаем свежие ссылки
-    const freshStars = document.querySelectorAll('#starRating span');
-    const freshRatingInput = document.getElementById('reviewRating');
-    
-    freshStars.forEach(star => {
-        // Наведение мыши
-        star.addEventListener('mouseenter', function() {
-            const value = parseInt(this.dataset.star);
-            freshStars.forEach(s => {
-                const val = parseInt(s.dataset.star);
-                s.style.color = val <= value ? '#bb8230' : '#ddd';
-            });
-        });
-        
-        // Уход мыши
-        star.addEventListener('mouseleave', function() {
-            const current = parseInt(freshRatingInput.value);
-            freshStars.forEach(s => {
-                const val = parseInt(s.dataset.star);
-                s.style.color = val <= current ? '#bb8230' : '#ddd';
-            });
-        });
-        
-        // Клик
-        star.addEventListener('click', function() {
-            const value = parseInt(this.dataset.star);
-            freshRatingInput.value = value;
-            freshStars.forEach(s => {
-                const val = parseInt(s.dataset.star);
-                s.style.color = val <= value ? '#bb8230' : '#ddd';
-            });
-            console.log('⭐ Оценка:', value);
-        });
-    });
-    
-    console.log('⭐ Звезды инициализированы!');
-    return true;
-}
-
-// ============================================================
-// ОБРАБОТКА ОТПРАВКИ ОТЗЫВА
+// ОБРАБОТКА ОТПРАВКИ ОТЗЫВА (РАБОТАЕТ С РАДИО-КНОПКАМИ)
 // ============================================================
 document.addEventListener('submit', function(e) {
     if (e.target && e.target.id === 'reviewForm') {
@@ -397,7 +337,10 @@ document.addEventListener('submit', function(e) {
         const detailContainer = document.getElementById('productDetail');
         const productId = parseInt(detailContainer.dataset.productId);
         const author = document.getElementById('reviewAuthor').value.trim();
-        const rating = document.getElementById('reviewRating').value;
+        
+        const ratingInput = document.querySelector('input[name="rating"]:checked');
+        const rating = ratingInput ? ratingInput.value : '0';
+        
         const text = document.getElementById('reviewText').value.trim();
         
         if (!author || !rating || rating === '0' || !text) {
@@ -409,8 +352,11 @@ document.addEventListener('submit', function(e) {
         
         document.getElementById('reviewAuthor').value = '';
         document.getElementById('reviewText').value = '';
-        document.getElementById('reviewRating').value = '0';
-        document.querySelectorAll('#starRating span').forEach(s => s.style.color = '#ddd');
+        document.querySelectorAll('input[name="rating"]').forEach(r => r.checked = false);
+        document.querySelectorAll('input[name="rating"]').forEach(r => {
+            const label = document.querySelector(`label[for="${r.id}"]`);
+            if (label) label.style.color = '#ddd';
+        });
         
         renderProductReviews(productId);
         renderCatalog();
@@ -441,7 +387,6 @@ document.querySelectorAll('[data-tab]').forEach(link => {
                 document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
                 document.getElementById('product').classList.add('active');
                 renderProductDetail(productId);
-                setTimeout(forceInitStars, 300);
             }
             e.preventDefault();
             return;
@@ -541,15 +486,6 @@ document.addEventListener('DOMContentLoaded', function() {
     renderCatalog();
     renderAllReviews();
     renderTodo();
-    setTimeout(forceInitStars, 500);
-});
-
-// Инициализация звезд при клике на карточку товара (дополнительная страховка)
-document.addEventListener('click', function(e) {
-    const link = e.target.closest('.product-card__link');
-    if (link && link.dataset.productId) {
-        setTimeout(forceInitStars, 400);
-    }
 });
 
 console.log('✅ app.js загружен');
