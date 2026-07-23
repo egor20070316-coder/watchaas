@@ -1,10 +1,7 @@
 // ============================================================
-// app.js — ФИНАЛЬНАЯ РАБОЧАЯ ВЕРСИЯ (ЗВЕЗДЫ РАБОТАЮТ!)
+// app.js — ФИНАЛЬНАЯ РАБОЧАЯ ВЕРСИЯ
 // ============================================================
 
-// ============================================================
-// ДАННЫЕ ТОВАРОВ
-// ============================================================
 const products = [
     {
         id: 1,
@@ -148,14 +145,8 @@ const products = [
     }
 ];
 
-// ============================================================
-// КЛЮЧИ ДЛЯ ХРАНЕНИЯ
-// ============================================================
 const REVIEWS_KEY = 'watchaas_reviews';
 
-// ============================================================
-// РАБОТА С ОТЗЫВАМИ
-// ============================================================
 function getReviews() {
     try {
         const data = localStorage.getItem(REVIEWS_KEY);
@@ -207,15 +198,13 @@ function renderStars(rating) {
 }
 
 // ============================================================
-// ЗВЕЗДЫ — 100% РАБОТАЮТ (через делегирование)
+// ЗВЕЗДЫ — РАБОТАЮТ!
 // ============================================================
 document.addEventListener('click', function(e) {
     const star = e.target.closest('.star');
     if (!star) return;
     
-    const container = star.closest('#starRatingContainer');
-    if (!container) return;
-    
+    const container = star.closest('div');
     const stars = container.querySelectorAll('.star');
     const ratingInput = document.getElementById('reviewRating');
     if (!ratingInput) return;
@@ -233,9 +222,7 @@ document.addEventListener('mouseover', function(e) {
     const star = e.target.closest('.star');
     if (!star) return;
     
-    const container = star.closest('#starRatingContainer');
-    if (!container) return;
-    
+    const container = star.closest('div');
     const stars = container.querySelectorAll('.star');
     const value = parseInt(star.dataset.value);
     
@@ -249,9 +236,7 @@ document.addEventListener('mouseout', function(e) {
     const star = e.target.closest('.star');
     if (!star) return;
     
-    const container = star.closest('#starRatingContainer');
-    if (!container) return;
-    
+    const container = star.closest('div');
     const stars = container.querySelectorAll('.star');
     const ratingInput = document.getElementById('reviewRating');
     if (!ratingInput) return;
@@ -264,7 +249,7 @@ document.addEventListener('mouseout', function(e) {
 });
 
 // ============================================================
-// РЕНДЕРИНГ КАТАЛОГА
+// РЕНДЕРИНГ
 // ============================================================
 function renderCatalog() {
     const grid = document.getElementById('productGrid');
@@ -294,9 +279,6 @@ function renderCatalog() {
     }).join('');
 }
 
-// ============================================================
-// РЕНДЕРИНГ ДЕТАЛЕЙ ТОВАРА
-// ============================================================
 function renderProductDetail(productId) {
     const p = products.find(prod => prod.id === productId);
     if (!p) return;
@@ -331,9 +313,6 @@ function renderProductDetail(productId) {
     renderProductReviews(productId);
 }
 
-// ============================================================
-// ОТРИСОВКА ОТЗЫВОВ НА СТРАНИЦЕ ТОВАРА
-// ============================================================
 function renderProductReviews(productId) {
     const container = document.getElementById('productReviewsList');
     if (!container) return;
@@ -356,9 +335,6 @@ function renderProductReviews(productId) {
     `).join('');
 }
 
-// ============================================================
-// РЕНДЕРИНГ ВСЕХ ОТЗЫВОВ (В РАЗДЕЛЕ REVIEWS)
-// ============================================================
 function renderAllReviews() {
     const container = document.getElementById('reviewList');
     if (!container) return;
@@ -423,7 +399,7 @@ document.addEventListener('submit', function(e) {
 });
 
 // ============================================================
-// НАВИГАЦИЯ ПО ВКЛАДКАМ
+// НАВИГАЦИЯ
 // ============================================================
 document.querySelectorAll('[data-tab]').forEach(link => {
     link.addEventListener('click', function(e) {
@@ -537,7 +513,7 @@ document.getElementById('todoForm')?.addEventListener('submit', function(e) {
 });
 
 // ============================================================
-// ИНИЦИАЛИЗАЦИЯ
+// ЗАПУСК
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     renderCatalog();
