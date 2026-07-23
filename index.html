@@ -3,11 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Watchaas</title>
+  <meta name="description" content="Приложение магазина часов Watchaas">
+  <meta name="theme-color" content="#171716">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Watchaas">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="assets/img/icons/pwa-icon-192.png">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/database.js" defer></script>
   <script src="assets/js/auth.js" defer></script>
   <script src="assets/js/app.js" defer></script>
+  <title>Watchaas</title>
 </head>
 <body>
   <header class="site-header">
@@ -33,12 +40,13 @@
         <div>
           <span class="eyebrow">Время выбирать лучшее</span>
           <h1>Часы, которые подчёркивают ваш характер</h1>
-          <p>Классические, спортивные и современные модели в одном понятном каталоге.</p>
+          <p>Классические, спортивные и современные модели в одном понятном каталоге. Каталог работает прямо в браузере, а список задач сохраняется на этом устройстве.</p>
           <div class="button-row">
             <a class="button" href="#catalog" data-tab="catalog">Открыть каталог часов</a>
+            <a class="button button--ghost" href="#todo" data-tab="todo">Список задач</a>
           </div>
         </div>
-        <a class="hero__logo-link" href="#catalog" data-tab="catalog">
+        <a class="hero__logo-link" href="#catalog" data-tab="catalog" aria-label="Открыть каталог часов">
           <img class="hero__logo" src="assets/img/watchaas-logo.png" alt="Watchaas">
         </a>
       </div>
@@ -49,6 +57,7 @@
         <div class="page-heading">
           <span class="eyebrow">Коллекция Watchaas</span>
           <h1>Каталог часов</h1>
+          <p>Все цены и модели приведены в учебных целях. Нажмите на карточку, чтобы открыть подробности.</p>
         </div>
         <div class="catalog-layout">
           <aside class="filters">
@@ -57,10 +66,16 @@
               <label>Поиск<input id="searchFilter" placeholder="Модель или бренд"></label>
               <label>Бренд<select id="brandFilter"><option value="">Все бренды</option></select></label>
               <label>Механизм<select id="mechanismFilter"><option value="">Все</option><option>Кварцевый</option><option>Механический</option><option>Электронный</option></select></label>
+              <div class="form-row">
+                <label>Цена от<input type="number" id="minPriceFilter" min="0"></label>
+                <label>до<input type="number" id="maxPriceFilter" min="0"></label>
+              </div>
+              <label>Сортировка<select id="sortFilter"><option value="">По умолчанию</option><option value="price_asc">Сначала дешевле</option><option value="price_desc">Сначала дороже</option></select></label>
               <button class="button" type="reset">Сбросить фильтры</button>
             </form>
           </aside>
           <section>
+            <div class="results" id="productCount"><b>Найдено: 10</b></div>
             <div class="product-grid product-grid--catalog" id="productGrid"></div>
           </section>
         </div>
@@ -72,6 +87,7 @@
         <a class="back-link" href="#catalog" data-tab="catalog">← Назад в каталог</a>
         <div id="productDetail"></div>
         
+        <!-- БЛОК ОТЗЫВОВ ПОД ТОВАРОМ -->
         <div id="productReviewsBlock" style="margin-top: 40px; border-top: 1px solid var(--color-border); padding-top: 30px;">
           <h2 style="font: 700 28px Georgia, serif;">Отзывы о модели</h2>
           
@@ -131,6 +147,7 @@
     <section class="section tab-section" id="todo">
       <div class="container">
         <div class="page-heading">
+          <span class="eyebrow">LocalStorage</span>
           <h1>ToDoList</h1>
         </div>
         <div class="todo-layout">
@@ -141,6 +158,10 @@
             <button class="button" type="submit">Добавить</button>
           </form>
           <section>
+            <div class="todo-toolbar">
+              <label>Фильтр по дате<input type="date" id="todoDateFilter"></label>
+              <label>Сортировка<select id="todoSort"><option value="">По умолчанию</option><option value="asc">Дата вверх</option><option value="desc">Дата вниз</option></select></label>
+            </div>
             <div class="task-list" id="todoList"></div>
           </section>
         </div>
@@ -156,22 +177,22 @@
   </footer>
 
   <script>
-    (function() {
-      const savedUser = localStorage.getItem('watchaas_current_user');
-      const authLink = document.getElementById('authLink');
-      if (savedUser) {
-        try {
-          const user = JSON.parse(savedUser);
-          authLink.innerHTML = `👤 ${user.name} (выйти)`;
-          authLink.href = '#';
-          authLink.style.color = 'var(--color-accent)';
-          authLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            localStorage.removeItem('watchaas_current_user');
-            window.location.href = 'index.html';
-          });
-        } catch {}
-      }
+    (function checkAuthStatus() {
+        const savedUser = localStorage.getItem('watchaas_current_user');
+        const authLink = document.getElementById('authLink');
+        if (savedUser) {
+            try {
+                const user = JSON.parse(savedUser);
+                authLink.innerHTML = `👤 ${user.name} (выйти)`;
+                authLink.href = '#';
+                authLink.style.color = 'var(--color-accent)';
+                authLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('watchaas_current_user');
+                    window.location.href = 'index.html';
+                });
+            } catch {}
+        }
     })();
   </script>
 </body>
