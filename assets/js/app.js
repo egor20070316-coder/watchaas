@@ -1,19 +1,26 @@
 // ============================================================
-// app.js — ПРОСТО РАБОТАЕТ
+// app.js — РАБОЧАЯ ВЕРСИЯ С ОТЗЫВАМИ
 // ============================================================
 
 const products = [
-  { id: 1, brand: 'Casio', model: 'G-Shock GA-2100-1A1ER', category: 'Мужские', mechanism: 'Кварцевый', price: 13990, oldPrice: 16990, image: 'real-01.jpg' },
-  { id: 2, brand: 'Tissot', model: 'PRX Quartz 40', category: 'Унисекс', mechanism: 'Кварцевый', price: 54900, oldPrice: null, image: 'real-02.jpg' },
-  { id: 3, brand: 'Casio', model: 'F-91W', category: 'Унисекс', mechanism: 'Электронный', price: 3490, oldPrice: 4490, image: 'real-03.jpg' },
-  { id: 4, brand: 'Seiko', model: 'SKX007', category: 'Мужские', mechanism: 'Механический', price: 52990, oldPrice: null, image: 'real-04.jpg' },
-  { id: 5, brand: 'Omega', model: 'Speedmaster Professional', category: 'Мужские', mechanism: 'Механический', price: 849900, oldPrice: 899900, image: 'real-05.jpg' },
-  { id: 6, brand: 'Rolex', model: 'Submariner Date 16610', category: 'Мужские', mechanism: 'Механический', price: 1290000, oldPrice: null, image: 'real-06.jpg' },
-  { id: 7, brand: 'Hamilton', model: 'Khaki X-Patrol H76566151', category: 'Мужские', mechanism: 'Механический', price: 169900, oldPrice: null, image: 'real-08.jpg' },
-  { id: 8, brand: 'Восток', model: 'Амфибия 090916', category: 'Мужские', mechanism: 'Механический', price: 12990, oldPrice: 14990, image: 'real-09.jpg' },
-  { id: 9, brand: 'Citizen', model: 'Eco-Drive AS2031-57E', category: 'Мужские', mechanism: 'Кварцевый', price: 89900, oldPrice: null, image: 'real-10.jpg' },
-  { id: 10, brand: 'Cartier', model: 'Tank Must 2021', category: 'Унисекс', mechanism: 'Кварцевый', price: 399000, oldPrice: 429000, image: 'real-11.jpg' }
+  { id: 1, brand: 'Casio', model: 'G-Shock GA-2100-1A1ER', price: 13990, oldPrice: 16990, image: 'real-01.jpg' },
+  { id: 2, brand: 'Tissot', model: 'PRX Quartz 40', price: 54900, oldPrice: null, image: 'real-02.jpg' },
+  { id: 3, brand: 'Casio', model: 'F-91W', price: 3490, oldPrice: 4490, image: 'real-03.jpg' },
+  { id: 4, brand: 'Seiko', model: 'SKX007', price: 52990, oldPrice: null, image: 'real-04.jpg' },
+  { id: 5, brand: 'Omega', model: 'Speedmaster Professional', price: 849900, oldPrice: 899900, image: 'real-05.jpg' },
+  { id: 6, brand: 'Rolex', model: 'Submariner Date 16610', price: 1290000, oldPrice: null, image: 'real-06.jpg' },
+  { id: 7, brand: 'Hamilton', model: 'Khaki X-Patrol H76566151', price: 169900, oldPrice: null, image: 'real-08.jpg' },
+  { id: 8, brand: 'Восток', model: 'Амфибия 090916', price: 12990, oldPrice: 14990, image: 'real-09.jpg' },
+  { id: 9, brand: 'Citizen', model: 'Eco-Drive AS2031-57E', price: 89900, oldPrice: null, image: 'real-10.jpg' },
+  { id: 10, brand: 'Cartier', model: 'Tank Must 2021', price: 399000, oldPrice: 429000, image: 'real-11.jpg' }
 ];
+
+const REVIEWS_KEY = 'watchaas_reviews';
+
+function getReviews() {
+  try { return JSON.parse(localStorage.getItem(REVIEWS_KEY)) || []; } 
+  catch { return []; }
+}
 
 function renderCatalog() {
   const grid = document.getElementById('productGrid');
@@ -29,7 +36,6 @@ function renderCatalog() {
           <div class="product-card__body">
             <small>${p.brand}</small>
             <h3>${p.model}</h3>
-            <p>${p.category} · ${p.mechanism}</p>
             <div class="price">${p.price.toLocaleString()} ₽ ${oldPrice}</div>
           </div>
         </a>
@@ -51,10 +57,33 @@ function renderProductDetail(productId) {
       <div>
         <h1>${p.brand} ${p.model}</h1>
         <div class="price price--large">${p.price.toLocaleString()} ₽ ${oldPrice}</div>
-        <p>${p.category} · ${p.mechanism}</p>
       </div>
     </div>
   `;
+}
+
+function renderAllReviews() {
+  const container = document.getElementById('reviewList');
+  if (!container) return;
+  const reviews = getReviews();
+  if (!reviews.length) {
+    container.innerHTML = '<p style="color: var(--color-muted); text-align: center;">Пока нет отзывов</p>';
+    return;
+  }
+  container.innerHTML = reviews.slice().reverse().map(r => {
+    const p = products.find(x => x.id === r.productId);
+    return `
+      <div class="review-card">
+        <div style="display: flex; justify-content: space-between;">
+          <strong>${r.author}</strong>
+          <span>${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+        </div>
+        <p><small style="color: var(--color-muted);">${p ? p.brand + ' ' + p.model : ''}</small></p>
+        <p>${r.text}</p>
+        <small style="color: var(--color-muted);">${new Date(r.date).toLocaleDateString()}</small>
+      </div>
+    `;
+  }).join('');
 }
 
 document.querySelectorAll('[data-tab]').forEach(link => {
@@ -65,6 +94,7 @@ document.querySelectorAll('[data-tab]').forEach(link => {
     document.querySelectorAll('.main-nav a').forEach(a => a.classList.remove('active'));
     this.classList.add('active');
     if (tab === 'catalog') renderCatalog();
+    if (tab === 'reviews') renderAllReviews();
     if (tab === 'todo') renderTodo();
     if (tab === 'product') {
       const id = parseInt(this.href.split('#product-')[1]);
@@ -74,9 +104,6 @@ document.querySelectorAll('[data-tab]').forEach(link => {
   });
 });
 
-// ============================================================
-// TODOLIST
-// ============================================================
 function getTasks() {
   try { return JSON.parse(localStorage.getItem('watchaas_tasks')) || []; }
   catch { return []; }
@@ -123,7 +150,8 @@ document.getElementById('todoForm')?.addEventListener('submit', function(e) {
 
 document.addEventListener('DOMContentLoaded', function() {
   renderCatalog();
+  renderAllReviews();
   renderTodo();
 });
 
-console.log('✅ Каталог работает');
+console.log('✅ Каталог и отзывы работают');
