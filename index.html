@@ -91,21 +91,32 @@
         <div id="productReviews" style="margin-top: 40px; border-top: 1px solid var(--color-border); padding-top: 30px;">
           <h2 style="font: 700 28px Georgia, serif;">Отзывы о модели</h2>
 
-          <!-- Форма добавления отзыва -->
+          <!-- ФОРМА ДОБАВЛЕНИЯ ОТЗЫВА (С РАБОЧИМИ ЗВЕЗДАМИ) -->
           <div class="form-card" style="margin-bottom: 30px;">
             <h3>Оставить отзыв</h3>
             <form id="reviewForm">
+              
+              <!-- ЗВЕЗДЫ (РАДИО-КНОПКИ) -->
               <div class="form-group" style="margin-bottom: 15px;">
                 <label>Ваша оценка</label>
-                <div id="starRating" style="display: flex; gap: 8px; font-size: 32px; cursor: pointer;">
-                  <span data-star="1" style="color: #ddd;">☆</span>
-                  <span data-star="2" style="color: #ddd;">☆</span>
-                  <span data-star="3" style="color: #ddd;">☆</span>
-                  <span data-star="4" style="color: #ddd;">☆</span>
-                  <span data-star="5" style="color: #ddd;">☆</span>
+                <div style="display: flex; gap: 8px; font-size: 40px; direction: rtl; justify-content: flex-start;">
+                  <input type="radio" name="rating" value="5" id="star5" style="display: none;">
+                  <label for="star5" style="cursor: pointer; color: #ddd; transition: color 0.2s;" onmouseover="this.style.color='#bb8230'" onmouseout="this.style.color='#ddd'">☆</label>
+                  
+                  <input type="radio" name="rating" value="4" id="star4" style="display: none;">
+                  <label for="star4" style="cursor: pointer; color: #ddd; transition: color 0.2s;" onmouseover="this.style.color='#bb8230'" onmouseout="this.style.color='#ddd'">☆</label>
+                  
+                  <input type="radio" name="rating" value="3" id="star3" style="display: none;">
+                  <label for="star3" style="cursor: pointer; color: #ddd; transition: color 0.2s;" onmouseover="this.style.color='#bb8230'" onmouseout="this.style.color='#ddd'">☆</label>
+                  
+                  <input type="radio" name="rating" value="2" id="star2" style="display: none;">
+                  <label for="star2" style="cursor: pointer; color: #ddd; transition: color 0.2s;" onmouseover="this.style.color='#bb8230'" onmouseout="this.style.color='#ddd'">☆</label>
+                  
+                  <input type="radio" name="rating" value="1" id="star1" style="display: none;">
+                  <label for="star1" style="cursor: pointer; color: #ddd; transition: color 0.2s;" onmouseover="this.style.color='#bb8230'" onmouseout="this.style.color='#ddd'">☆</label>
                 </div>
-                <input type="hidden" id="reviewRating" value="0">
               </div>
+              
               <div class="form-group" style="margin-bottom: 15px;">
                 <label for="reviewAuthor">Ваше имя</label>
                 <input type="text" id="reviewAuthor" placeholder="Введите ваше имя" required>
