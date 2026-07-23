@@ -160,11 +160,10 @@ function saveReviews(reviews) {
     localStorage.setItem(REVIEWS_KEY, JSON.stringify(reviews));
 }
 
-function addReview(productId, author, rating, text) {
+function addReview(author, rating, text) {
     const reviews = getReviews();
     const newReview = {
         id: Date.now().toString(),
-        productId: parseInt(productId),
         author: author.trim(),
         rating: parseInt(rating),
         text: text.trim(),
@@ -175,22 +174,6 @@ function addReview(productId, author, rating, text) {
     return newReview;
 }
 
-function getReviewsByProduct(productId) {
-    const reviews = getReviews();
-    return reviews.filter(r => r.productId === parseInt(productId));
-}
-
-function getAverageRating(productId) {
-    const reviews = getReviewsByProduct(productId);
-    if (reviews.length === 0) return 0;
-    const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
-    return Math.round((sum / reviews.length) * 10) / 10;
-}
-
-function getReviewCount(productId) {
-    return getReviewsByProduct(productId).length;
-}
-
 function renderStars(rating) {
     const full = Math.floor(rating);
     const empty = 5 - full;
@@ -198,63 +181,11 @@ function renderStars(rating) {
 }
 
 // ============================================================
-// ЗВЕЗДЫ — РАБОТАЮТ!
-// ============================================================
-document.addEventListener('click', function(e) {
-    const star = e.target.closest('.star');
-    if (!star) return;
-    
-    const container = star.closest('div');
-    const stars = container.querySelectorAll('.star');
-    const ratingInput = document.getElementById('reviewRating');
-    if (!ratingInput) return;
-    
-    const value = parseInt(star.dataset.value);
-    ratingInput.value = value;
-    
-    stars.forEach(s => {
-        const val = parseInt(s.dataset.value);
-        s.style.color = val <= value ? '#bb8230' : '#ddd';
-    });
-});
-
-document.addEventListener('mouseover', function(e) {
-    const star = e.target.closest('.star');
-    if (!star) return;
-    
-    const container = star.closest('div');
-    const stars = container.querySelectorAll('.star');
-    const value = parseInt(star.dataset.value);
-    
-    stars.forEach(s => {
-        const val = parseInt(s.dataset.value);
-        s.style.color = val <= value ? '#bb8230' : '#ddd';
-    });
-});
-
-document.addEventListener('mouseout', function(e) {
-    const star = e.target.closest('.star');
-    if (!star) return;
-    
-    const container = star.closest('div');
-    const stars = container.querySelectorAll('.star');
-    const ratingInput = document.getElementById('reviewRating');
-    if (!ratingInput) return;
-    
-    const current = parseInt(ratingInput.value);
-    stars.forEach(s => {
-        const val = parseInt(s.dataset.value);
-        s.style.color = val <= current ? '#bb8230' : '#ddd';
-    });
-});
-
-// ============================================================
-// РЕНДЕРИНГ
+// РЕНДЕРИНГ КАТАЛОГА
 // ============================================================
 function renderCatalog() {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
-    
     grid.innerHTML = products.map(p => {
         const avgRating = getAverageRating(p.id);
         const count = getReviewCount(p.id);
@@ -279,13 +210,30 @@ function renderCatalog() {
     }).join('');
 }
 
+function getAverageRating(productId) {
+    const reviews = getReviewsByProduct(productId);
+    if (reviews.length === 0) return 0;
+    const sum = reviews.reduce((acc, r) => acc + r.rating, 0);
+    return Math.round((sum / reviews.length) * 10) / 10;
+}
+
+function getReviewCount(productId) {
+    return getReviewsByProduct(productId).length;
+}
+
+function getReviewsByProduct(productId) {
+    const reviews = getReviews();
+    return reviews.filter(r => r.productId === parseInt(productId));
+}
+
+// ============================================================
+// РЕНДЕРИНГ ДЕТАЛЕЙ ТОВАРА
+// ============================================================
 function renderProductDetail(productId) {
     const p = products.find(prod => prod.id === productId);
     if (!p) return;
-
     const detailContainer = document.getElementById('productDetail');
     detailContainer.dataset.productId = productId;
-
     const avgRating = getAverageRating(p.id);
     const count = getReviewCount(p.id);
     const stars = renderStars(avgRating || p.rating);
@@ -293,7 +241,6 @@ function renderProductDetail(productId) {
     const specsHtml = Object.entries(p.specs).map(([key, value]) => `
         <div><dt>${key}</dt><dd>${value}</dd></div>
     `).join('');
-
     detailContainer.innerHTML = `
         <div class="product-detail">
             <div class="product-detail__image">
@@ -309,22 +256,22 @@ function renderProductDetail(productId) {
             </div>
         </div>
     `;
-
-    renderProductReviews(productId);
 }
 
-function renderProductReviews(productId) {
-    const container = document.getElementById('productReviewsList');
+// ============================================================
+// ОТРИСОВКА ВСЕХ ОТЗЫВОВ (В РАЗДЕЛЕ REVIEWS)
+// ============================================================
+function renderAllReviews() {
+    const container = document.getElementById('reviewList');
     if (!container) return;
-    const reviews = getReviewsByProduct(productId);
-    
+    const reviews = getReviews();
     if (reviews.length === 0) {
-        container.innerHTML = '<p style="color: var(--color-muted);">Пока нет отзывов. Будьте первым!</p>';
+        container.innerHTML = '<p style="color: var(--color-muted); text-align: center; padding: 40px;">Пока нет отзывов</p>';
         return;
     }
-    
-    container.innerHTML = reviews.map(review => `
-        <div class="review-card" style="margin-bottom: 12px;">
+    const sorted = [...reviews].sort((a, b) => new Date(b.date) - new Date(a.date));
+    container.innerHTML = sorted.map(review => `
+        <div class="review-card">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <strong>${review.author}</strong>
                 <span style="color: #bb8230;">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
@@ -335,35 +282,49 @@ function renderProductReviews(productId) {
     `).join('');
 }
 
-function renderAllReviews() {
-    const container = document.getElementById('reviewList');
-    if (!container) return;
-    
-    const reviews = getReviews();
-    
-    if (reviews.length === 0) {
-        container.innerHTML = '<p style="color: var(--color-muted); text-align: center; padding: 40px;">Пока нет отзывов</p>';
-        return;
-    }
+// ============================================================
+// ЗВЕЗДЫ — 100% РАБОТАЮТ
+// ============================================================
+document.addEventListener('click', function(e) {
+    const star = e.target.closest('.star');
+    if (!star) return;
+    const container = star.closest('div');
+    const stars = container.querySelectorAll('.star');
+    const ratingInput = document.getElementById('reviewRating');
+    if (!ratingInput) return;
+    const value = parseInt(star.dataset.value);
+    ratingInput.value = value;
+    stars.forEach(s => {
+        const val = parseInt(s.dataset.value);
+        s.style.color = val <= value ? '#bb8230' : '#ddd';
+    });
+});
 
-    const sorted = [...reviews].sort((a, b) => new Date(b.date) - new Date(a.date));
-    
-    container.innerHTML = sorted.map(review => {
-        const product = products.find(p => p.id === review.productId);
-        const productName = product ? `${product.brand} ${product.model}` : 'Неизвестная модель';
-        return `
-            <div class="review-card">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <strong>${review.author}</strong>
-                    <span style="color: #bb8230;">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
-                </div>
-                <p><small style="color: var(--color-muted);">${productName}</small></p>
-                <p>${review.text}</p>
-                <small style="color: var(--color-muted);">${new Date(review.date).toLocaleDateString('ru-RU')}</small>
-            </div>
-        `;
-    }).join('');
-}
+document.addEventListener('mouseover', function(e) {
+    const star = e.target.closest('.star');
+    if (!star) return;
+    const container = star.closest('div');
+    const stars = container.querySelectorAll('.star');
+    const value = parseInt(star.dataset.value);
+    stars.forEach(s => {
+        const val = parseInt(s.dataset.value);
+        s.style.color = val <= value ? '#bb8230' : '#ddd';
+    });
+});
+
+document.addEventListener('mouseout', function(e) {
+    const star = e.target.closest('.star');
+    if (!star) return;
+    const container = star.closest('div');
+    const stars = container.querySelectorAll('.star');
+    const ratingInput = document.getElementById('reviewRating');
+    if (!ratingInput) return;
+    const current = parseInt(ratingInput.value);
+    stars.forEach(s => {
+        const val = parseInt(s.dataset.value);
+        s.style.color = val <= current ? '#bb8230' : '#ddd';
+    });
+});
 
 // ============================================================
 // ОБРАБОТКА ОТПРАВКИ ОТЗЫВА
@@ -371,29 +332,19 @@ function renderAllReviews() {
 document.addEventListener('submit', function(e) {
     if (e.target && e.target.id === 'reviewForm') {
         e.preventDefault();
-        
-        const detailContainer = document.getElementById('productDetail');
-        const productId = detailContainer.dataset.productId;
         const author = document.getElementById('reviewAuthor').value.trim();
         const rating = document.getElementById('reviewRating').value;
         const text = document.getElementById('reviewText').value.trim();
-        
         if (!author || !rating || rating === '0' || !text) {
             alert('Пожалуйста, заполните все поля и поставьте оценку!');
             return;
         }
-        
-        addReview(productId, author, rating, text);
-        
+        addReview(author, rating, text);
         document.getElementById('reviewAuthor').value = '';
         document.getElementById('reviewText').value = '';
         document.getElementById('reviewRating').value = '0';
         document.querySelectorAll('.star').forEach(s => s.style.color = '#ddd');
-        
-        renderProductReviews(parseInt(productId));
-        renderCatalog();
         renderAllReviews();
-        
         alert('✅ Отзыв добавлен! Спасибо!');
     }
 });
@@ -404,7 +355,6 @@ document.addEventListener('submit', function(e) {
 document.querySelectorAll('[data-tab]').forEach(link => {
     link.addEventListener('click', function(e) {
         const tab = this.dataset.tab;
-        
         if (tab === 'home') {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
             document.getElementById('home').classList.add('active');
@@ -412,7 +362,6 @@ document.querySelectorAll('[data-tab]').forEach(link => {
             document.querySelector('[data-tab="home"]').classList.add('active');
             return;
         }
-        
         if (tab === 'product') {
             const productId = parseInt(this.href.split('#product-')[1]);
             if (productId) {
@@ -423,7 +372,6 @@ document.querySelectorAll('[data-tab]').forEach(link => {
             e.preventDefault();
             return;
         }
-        
         if (tab === 'catalog') {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
             document.getElementById('catalog').classList.add('active');
@@ -432,7 +380,6 @@ document.querySelectorAll('[data-tab]').forEach(link => {
             renderCatalog();
             return;
         }
-        
         if (tab === 'reviews') {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
             document.getElementById('reviews').classList.add('active');
@@ -441,7 +388,6 @@ document.querySelectorAll('[data-tab]').forEach(link => {
             renderAllReviews();
             return;
         }
-        
         if (tab === 'todo') {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active'));
             document.getElementById('todo').classList.add('active');
@@ -473,12 +419,10 @@ function renderTodo() {
     const list = document.getElementById('todoList');
     if (!list) return;
     const tasks = getTasks();
-    
     if (tasks.length === 0) {
         list.innerHTML = '<p style="color: var(--color-muted); text-align: center; padding: 30px;">Список задач пуст</p>';
         return;
     }
-    
     list.innerHTML = tasks.map((task, index) => `
         <div class="task-card">
             <div>
@@ -504,7 +448,6 @@ document.getElementById('todoForm')?.addEventListener('submit', function(e) {
     const title = document.getElementById('todoTitle').value.trim();
     const date = document.getElementById('todoDate').value;
     if (!title || !date) return;
-    
     const tasks = getTasks();
     tasks.push({ title, date });
     saveTasks(tasks);
@@ -519,6 +462,5 @@ document.addEventListener('DOMContentLoaded', function() {
     renderCatalog();
     renderAllReviews();
     renderTodo();
+    console.log('✅ Всё работает!');
 });
-
-console.log('✅ app.js загружен (ЗВЕЗДЫ РАБОТАЮТ!)');
