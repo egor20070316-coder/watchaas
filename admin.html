@@ -1,1 +1,396 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Админ-панель — Watchaas</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <style>
+        /* Стили для админ-панели */
+        .admin-page {
+            padding: 40px 0;
+            min-height: 100vh;
+            background: var(--color-bg);
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        .admin-header h1 {
+            font: 700 36px Georgia, serif;
+            margin: 0;
+        }
+        .admin-header .badge {
+            background: var(--color-accent);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            color: #171716;
+        }
+        .admin-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+        .admin-actions .button {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+        .admin-actions .button--danger {
+            border-color: var(--color-danger);
+            background: var(--color-danger);
+            color: #fff;
+        }
+        .admin-actions .button--danger:hover {
+            background: #8a2f2a;
+        }
+        .admin-actions .button--success {
+            border-color: #2a7a4a;
+            background: #2a7a4a;
+            color: #fff;
+        }
+        .admin-actions .button--success:hover {
+            background: #1e5f37;
+        }
+        .user-table-wrapper {
+            overflow-x: auto;
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow);
+        }
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .user-table th {
+            background: var(--color-dark);
+            color: #fff;
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .user-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--color-border);
+            vertical-align: middle;
+        }
+        .user-table tr:hover td {
+            background: #faf8f4;
+        }
+        .user-table tr:last-child td {
+            border-bottom: none;
+        }
+        .user-table .empty-row td {
+            text-align: center;
+            color: var(--color-muted);
+            padding: 40px 16px;
+        }
+        .user-table .delete-btn {
+            background: none;
+            border: 1px solid #cfaaa7;
+            color: var(--color-danger);
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .user-table .delete-btn:hover {
+            background: var(--color-danger);
+            color: #fff;
+        }
+        .user-table .user-id {
+            color: var(--color-muted);
+            font-size: 12px;
+            font-family: monospace;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--color-accent-dark);
+            font-weight: 700;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .stats .stat-item {
+            background: var(--color-surface);
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: 1px solid var(--color-border);
+        }
+        .stats .stat-item strong {
+            font-size: 28px;
+            display: block;
+            color: var(--color-accent-dark);
+        }
+        .stats .stat-item span {
+            color: var(--color-muted);
+            font-size: 13px;
+        }
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--color-dark);
+            color: #fff;
+            padding: 14px 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+        .toast.success {
+            background: #2a7a4a;
+        }
+        .toast.error {
+            background: var(--color-danger);
+        }
+        .user-table .role-badge {
+            background: #e8e0d6;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #5a4f42;
+        }
+        .user-table .role-badge.admin {
+            background: var(--color-accent);
+            color: #171716;
+        }
+    </style>
+</head>
+<body>
 
+<div class="admin-page">
+    <div class="container">
+
+        <!-- Назад -->
+        <a href="index.html" class="back-link">← На главную</a>
+
+        <!-- Шапка -->
+        <div class="admin-header">
+            <div>
+                <h1>👑 Админ-панель</h1>
+                <p style="color: var(--color-muted); margin: 4px 0 0;">
+                    Управление пользователями и просмотр данных
+                </p>
+            </div>
+            <span class="badge" id="userCountBadge">0 пользователей</span>
+        </div>
+
+        <!-- Статистика -->
+        <div class="stats">
+            <div class="stat-item">
+                <strong id="totalUsers">0</strong>
+                <span>Всего пользователей</span>
+            </div>
+            <div class="stat-item">
+                <strong id="todayUsers">0</strong>
+                <span>Зарегистрировались сегодня</span>
+            </div>
+        </div>
+
+        <!-- Действия -->
+        <div class="admin-actions">
+            <button class="button button--success" id="exportExcelBtn">📊 Скачать Excel</button>
+            <button class="button button--danger" id="clearAllBtn">🗑️ Очистить всех пользователей</button>
+            <button class="button" id="refreshBtn">🔄 Обновить</button>
+        </div>
+
+        <!-- Таблица пользователей -->
+        <div class="user-table-wrapper">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Имя</th>
+                        <th>Email</th>
+                        <th>Дата регистрации</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <tr class="empty-row">
+                        <td colspan="5">Загрузка пользователей...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!-- Toast-уведомления -->
+<div class="toast" id="toast"></div>
+
+<!-- Подключаем скрипты -->
+<script src="assets/js/database.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/xlsx-export.js"></script>
+
+<script>
+    // ============================================================
+    // admin.js — логика админ-панели
+    // ============================================================
+
+    // Элементы
+    const tableBody = document.getElementById('userTableBody');
+    const totalUsersEl = document.getElementById('totalUsers');
+    const todayUsersEl = document.getElementById('todayUsers');
+    const userCountBadge = document.getElementById('userCountBadge');
+    const toast = document.getElementById('toast');
+
+    // ============================================================
+    // Toast-уведомления
+    // ============================================================
+    function showToast(message, type = 'success') {
+        toast.textContent = message;
+        toast.className = 'toast ' + type + ' show';
+        clearTimeout(toast._timer);
+        toast._timer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    // ============================================================
+    // Проверка доступа (только для админа)
+    // ============================================================
+    function checkAdminAccess() {
+        const savedUser = localStorage.getItem('watchaas_current_user');
+        if (!savedUser) {
+            showToast('⛔ Доступ запрещён. Войдите как администратор.', 'error');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
+            return false;
+        }
+        return true;
+    }
+
+    // ============================================================
+    // Отображение пользователей
+    // ============================================================
+    function renderUsers() {
+        const users = DB.getUsers();
+        const total = users.length;
+
+        // Статистика
+        totalUsersEl.textContent = total;
+        userCountBadge.textContent = total + ' пользователей';
+
+        // Сегодняшние регистрации
+        const today = new Date().toDateString();
+        const todayUsers = users.filter(u => {
+            return new Date(u.createdAt).toDateString() === today;
+        });
+        todayUsersEl.textContent = todayUsers.length;
+
+        // Таблица
+        if (users.length === 0) {
+            tableBody.innerHTML = `
+                <tr class="empty-row">
+                    <td colspan="5">😕 Пока нет зарегистрированных пользователей</td>
+                </tr>
+            `;
+            return;
+        }
+
+        tableBody.innerHTML = users.map(user => `
+            <tr>
+                <td><span class="user-id">#${user.id.slice(-6)}</span></td>
+                <td><strong>${user.name}</strong></td>
+                <td>${user.email}</td>
+                <td>${new Date(user.createdAt).toLocaleString('ru-RU')}</td>
+                <td>
+                    <button class="delete-btn" onclick="deleteUser('${user.id}')">Удалить</button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // ============================================================
+    // Удаление пользователя
+    // ============================================================
+    function deleteUser(id) {
+        if (!confirm('Удалить этого пользователя?')) return;
+
+        const user = DB.findByEmail(DB.getUsers().find(u => u.id === id)?.email);
+        if (user) {
+            DB.deleteUser(id);
+            renderUsers();
+            showToast(`👤 Пользователь ${user.name} удалён`);
+        }
+    }
+
+    // ============================================================
+    // Очистка всех пользователей
+    // ============================================================
+    document.getElementById('clearAllBtn').addEventListener('click', function() {
+        if (!confirm('⚠️ Удалить ВСЕХ пользователей? Это действие необратимо!')) return;
+        DB.clearAll();
+        renderUsers();
+        showToast('🗑️ Все пользователи удалены');
+    });
+
+    // ============================================================
+    // Обновление
+    // ============================================================
+    document.getElementById('refreshBtn').addEventListener('click', function() {
+        renderUsers();
+        showToast('🔄 Данные обновлены');
+    });
+
+    // ============================================================
+    // Экспорт в Excel
+    // ============================================================
+    document.getElementById('exportExcelBtn').addEventListener('click', function() {
+        if (typeof exportUsersToExcel === 'function') {
+            const result = exportUsersToExcel();
+            if (result) {
+                showToast('📊 Excel-файл скачан');
+            } else {
+                showToast('😕 Нет пользователей для экспорта', 'error');
+            }
+        } else {
+            showToast('⚠️ Библиотека Excel не загружена', 'error');
+        }
+    });
+
+    // ============================================================
+    // Инициализация
+    // ============================================================
+    // Проверяем доступ
+    if (!checkAdminAccess()) {
+        // Если нет доступа, дальше не выполняем
+    } else {
+        // Загружаем пользователей
+        renderUsers();
+        console.log('👑 Админ-панель загружена');
+    }
+</script>
+
+</body>
+</html>
