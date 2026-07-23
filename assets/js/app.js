@@ -1,5 +1,5 @@
 // ============================================================
-// app.js — РАБОЧАЯ ВЕРСИЯ (ФИНАЛ)
+// app.js — ФИНАЛЬНАЯ РАБОЧАЯ ВЕРСИЯ (ЗВЕЗДЫ РАБОТАЮТ!)
 // ============================================================
 
 // ============================================================
@@ -207,41 +207,61 @@ function renderStars(rating) {
 }
 
 // ============================================================
-// ЗВЕЗДЫ — РАБОЧАЯ ЛОГИКА
+// ЗВЕЗДЫ — 100% РАБОТАЮТ (через делегирование)
 // ============================================================
-function initStars() {
-    const stars = document.querySelectorAll('.star');
+document.addEventListener('click', function(e) {
+    const star = e.target.closest('.star');
+    if (!star) return;
+    
+    const container = star.closest('#starRatingContainer');
+    if (!container) return;
+    
+    const stars = container.querySelectorAll('.star');
     const ratingInput = document.getElementById('reviewRating');
+    if (!ratingInput) return;
     
-    if (!stars.length || !ratingInput) return;
+    const value = parseInt(star.dataset.value);
+    ratingInput.value = value;
     
-    stars.forEach(star => {
-        star.addEventListener('click', function() {
-            const value = parseInt(this.dataset.value);
-            ratingInput.value = value;
-            stars.forEach(s => {
-                const val = parseInt(s.dataset.value);
-                s.style.color = val <= value ? '#bb8230' : '#ddd';
-            });
-        });
-        
-        star.addEventListener('mouseenter', function() {
-            const value = parseInt(this.dataset.value);
-            stars.forEach(s => {
-                const val = parseInt(s.dataset.value);
-                s.style.color = val <= value ? '#bb8230' : '#ddd';
-            });
-        });
-        
-        star.addEventListener('mouseleave', function() {
-            const current = parseInt(ratingInput.value);
-            stars.forEach(s => {
-                const val = parseInt(s.dataset.value);
-                s.style.color = val <= current ? '#bb8230' : '#ddd';
-            });
-        });
+    stars.forEach(s => {
+        const val = parseInt(s.dataset.value);
+        s.style.color = val <= value ? '#bb8230' : '#ddd';
     });
-}
+});
+
+document.addEventListener('mouseover', function(e) {
+    const star = e.target.closest('.star');
+    if (!star) return;
+    
+    const container = star.closest('#starRatingContainer');
+    if (!container) return;
+    
+    const stars = container.querySelectorAll('.star');
+    const value = parseInt(star.dataset.value);
+    
+    stars.forEach(s => {
+        const val = parseInt(s.dataset.value);
+        s.style.color = val <= value ? '#bb8230' : '#ddd';
+    });
+});
+
+document.addEventListener('mouseout', function(e) {
+    const star = e.target.closest('.star');
+    if (!star) return;
+    
+    const container = star.closest('#starRatingContainer');
+    if (!container) return;
+    
+    const stars = container.querySelectorAll('.star');
+    const ratingInput = document.getElementById('reviewRating');
+    if (!ratingInput) return;
+    
+    const current = parseInt(ratingInput.value);
+    stars.forEach(s => {
+        const val = parseInt(s.dataset.value);
+        s.style.color = val <= current ? '#bb8230' : '#ddd';
+    });
+});
 
 // ============================================================
 // РЕНДЕРИНГ КАТАЛОГА
@@ -309,7 +329,6 @@ function renderProductDetail(productId) {
     `;
 
     renderProductReviews(productId);
-    setTimeout(initStars, 100);
 }
 
 // ============================================================
@@ -524,7 +543,6 @@ document.addEventListener('DOMContentLoaded', function() {
     renderCatalog();
     renderAllReviews();
     renderTodo();
-    setTimeout(initStars, 300);
 });
 
-console.log('✅ app.js загружен (100% рабочая версия)');
+console.log('✅ app.js загружен (ЗВЕЗДЫ РАБОТАЮТ!)');
