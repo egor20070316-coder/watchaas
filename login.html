@@ -1,1 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Вход / Регистрация — Watchaas</title>
+    <link rel="stylesheet" href="resources/css/style.css" />
+    <style>
+        /* Стили для страницы входа */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-bg);
+            padding: 30px;
+        }
+        .auth-container {
+            max-width: 440px;
+            width: 100%;
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            padding: 40px 36px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+        }
+        .auth-container h1 {
+            font: 700 32px Georgia, serif;
+            margin: 0 0 8px;
+        }
+        .auth-container p {
+            color: var(--color-muted);
+            margin: 0 0 28px;
+        }
+        .auth-container .form-group {
+            margin-bottom: 18px;
+        }
+        .auth-container label {
+            display: block;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+        .auth-container input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            font-size: 15px;
+            background: #fff;
+            box-sizing: border-box;
+        }
+        .auth-container input:focus {
+            outline: 3px solid rgba(182, 139, 76, 0.22);
+            border-color: var(--color-accent);
+        }
+        .auth-container .button {
+            width: 100%;
+            justify-content: center;
+            padding: 14px;
+            font-size: 16px;
+        }
+        .auth-container .switch-link {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
+            color: var(--color-muted);
+        }
+        .auth-container .switch-link a {
+            color: var(--color-accent-dark);
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .auth-container .switch-link a:hover {
+            text-decoration: underline;
+        }
+        .auth-container .error-msg {
+            background: #fde8e6;
+            color: var(--color-danger);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .auth-container .success-msg {
+            background: #e6f4e8;
+            color: #2a7a4a;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .auth-container .hidden {
+            display: none !important;
+        }
+        .back-to-site {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--color-muted);
+            font-size: 14px;
+        }
+        .back-to-site:hover {
+            color: var(--color-accent-dark);
+        }
+        .auth-container .form-row {
+            display: flex;
+            gap: 10px;
+        }
+        .auth-container .form-row .form-group {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
 
+<div class="auth-page">
+    <div class="auth-container">
+
+        <!-- Ссылка назад на главную -->
+        <a href="index.html" class="back-to-site">← На главную</a>
+
+        <!-- Заголовок -->
+        <h1 id="form-title">Вход</h1>
+        <p id="form-subtitle">Войдите в свой аккаунт, чтобы продолжить</p>
+
+        <!-- Сообщения -->
+        <div id="error-msg" class="error-msg"></div>
+        <div id="success-msg" class="success-msg"></div>
+
+        <!-- Форма -->
+        <form id="auth-form">
+
+            <!-- Имя (только для регистрации) -->
+            <div id="name-field" class="form-group hidden">
+                <label for="fullname">Имя</label>
+                <input type="text" id="fullname" placeholder="Введите ваше имя" autocomplete="name" />
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="example@mail.com" required autocomplete="email" />
+            </div>
+
+            <!-- Пароль -->
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" placeholder="Минимум 6 символов" required minlength="6" autocomplete="current-password" />
+            </div>
+
+            <!-- Кнопка -->
+            <button type="submit" class="button" id="submit-btn">Войти</button>
+
+        </form>
+
+        <!-- Переключение режима -->
+        <div class="switch-link">
+            <span id="switch-text">Нет аккаунта?</span>
+            <a id="switch-link">Зарегистрироваться</a>
+        </div>
+
+    </div>
+</div>
+
+<!-- Подключаем скрипты -->
+<script src="resources/js/database.js"></script>
+<script src="resources/js/auth.js"></script>
+
+</body>
+</html>
